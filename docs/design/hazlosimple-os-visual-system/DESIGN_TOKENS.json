@@ -1,0 +1,98 @@
+{
+  "fonts": {
+    "sans": "\"Inter\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+    "mono": "\"IBM Plex Mono\", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+    "googleFontsHref": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap"
+  },
+  "colors": {
+    "os": {
+      "bg": "#EEF0EA",
+      "bgDeep": "#E1E5DA",
+      "grid": "#D7DBD2"
+    },
+    "window": {
+      "paper": "#FBFAF6",
+      "header": "#E7E8E1",
+      "border": "#CCD1C5",
+      "shadow": "rgba(16,32,51,0.16)"
+    },
+    "text": {
+      "primary": "#102033",
+      "secondary": "#667085",
+      "muted": "#98A2B3"
+    },
+    "surface": {
+      "soft": "#F6F7F1",
+      "white": "#FFFDF7"
+    },
+    "brand": {
+      "navy": "#082B4C",
+      "green": "#16A34A",
+      "orangeDeprecated": "#C85A24"
+    },
+    "action": {
+      "primary": "#0B5FFF",
+      "primaryHover": "#0847C2"
+    },
+    "button": {
+      "charcoal": "#1F2328",
+      "charcoalHover": "#111827"
+    },
+    "state": {
+      "success": "#22C55E",
+      "warning": "#F59E0B",
+      "danger": "#DC2626",
+      "info": "#0EA5E9"
+    },
+    "app": {
+      "crm": {
+        "primary": "#2563EB",
+        "deep": "#1E3A8A",
+        "soft": "#DBEAFE",
+        "graph": "#60A5FA"
+      },
+      "cocina": {
+        "primary": "#B91C1C",
+        "deep": "#7F1D1D",
+        "soft": "#FEE2E2",
+        "accent": "#FB7185"
+      },
+      "clinica": {
+        "primary": "#0F766E",
+        "deep": "#134E4A",
+        "soft": "#CCFBF1",
+        "accent": "#38BDF8"
+      },
+      "operacion": {
+        "primary": "#334155",
+        "deep": "#0F172A",
+        "soft": "#E2E8F0",
+        "alert": "#F59E0B"
+      }
+    },
+    "macLights": {
+      "red": "#FF5F57",
+      "yellow": "#FEBC2E",
+      "green": "#28C840"
+    }
+  },
+  "radii": {
+    "window": "22px",
+    "panel": "16px",
+    "appIcon": "20px",
+    "button": "14px",
+    "pill": "999px"
+  },
+  "shadows": {
+    "window": "0 24px 80px rgba(16,32,51,0.16)",
+    "panel": "0 12px 36px rgba(16,32,51,0.10)",
+    "icon": "0 14px 32px rgba(16,32,51,0.18), inset 0 1px 0 rgba(255,255,255,0.55)",
+    "button": "0 12px 24px rgba(16,32,51,0.18), inset 0 1px 0 rgba(255,255,255,0.18)"
+  },
+  "rules": {
+    "orange": "Do not use orange as a system color. Orange is deprecated for this version and may only appear as a tiny legacy brand accent if unavoidable.",
+    "mono": "Use mono only for system labels, menu items, badges, statuses, and window titles. Do not use mono for body copy.",
+    "home": "Home must behave like a live OS launcher / carousel, not a static landing.",
+    "microdemos": "Each microdemo must show metric + graph + flow + live record + action."
+  }
+}
