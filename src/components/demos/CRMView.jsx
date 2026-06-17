@@ -6,6 +6,8 @@ import StatusChip from "../ui/StatusChip";
 import DemoKpiRow from "../ui/DemoKpiRow";
 import DemoSectionLabel from "../ui/DemoSectionLabel";
 
+const WA_BASE = "https://wa.me/522213619628?text=";
+
 const CRM_EXTRA = {
   "crm-1": { prob: 72, timeline: ["WhatsApp respondido · Ayer 3:12 PM", "Cotización enviada · Hace 2 días", "Primer contacto · Hace 5 días"] },
   "crm-2": { prob: 45, timeline: ["Dudas de alcance · Hoy 11:00 AM", "Cotización enviada · Hace 3 días", "Primer contacto · Hace 8 días"] },
@@ -17,10 +19,42 @@ const CRM_EXTRA = {
 export default function CRMView({ completedRecords, demo, onAction, onBack, onSelectRecord, selectedRecord }) {
   const [stageFilter, setStageFilter] = useState("Todos");
   const [innerView, setInnerView] = useState("list");
-  const completed = Boolean(completedRecords[selectedRecord.id]);
+  const [localFollowupDone, setLocalFollowupDone] = useState({});
+  const [localTimeline, setLocalTimeline] = useState({});
+
   const color = APP_COLOR.crm;
   const filtered = stageFilter === "Todos" ? demo.records : demo.records.filter(r => r.stage === stageFilter);
   const extra = CRM_EXTRA[selectedRecord.id] || { prob: 0, timeline: [] };
+
+  const isFollowupDone = Boolean(localFollowupDone[selectedRecord.id]) || Boolean(completedRecords[selectedRecord.id]);
+  const pendingCount = Math.max(0, 3 - Object.keys(localFollowupDone).length);
+
+  // Merge local + static timeline
+  const localEvents = localTimeline[selectedRecord.id] || [];
+  const mergedTimeline = [...localEvents, ...extra.timeline];
+
+  const handleStageFilter = (stage) => {
+    const newFiltered = stage === "Todos" ? demo.records : demo.records.filter(r => r.stage === stage);
+    setStageFilter(stage);
+    if (newFiltered.length > 0 && !newFiltered.find(r => r.id === selectedRecord.id)) {
+      onSelectRecord(newFiltered[0]);
+    }
+  };
+
+  const handleFollowup = () => {
+    if (isFollowupDone) return;
+    setLocalFollowupDone(p => ({ ...p, [selectedRecord.id]: true }));
+    setLocalTimeline(p => ({
+      ...p,
+      [selectedRecord.id]: [
+        "Seguimiento registrado · Ahora",
+        ...(p[selectedRecord.id] || []),
+      ],
+    }));
+    onAction();
+  };
+
+  const waLead = `${WA_BASE}${encodeURIComponent(`Hola ${selectedRecord.name.split(" ")[0]}, me comunico en seguimiento a tu cotización de ${selectedRecord.service}. ¿Tienes disponibilidad esta semana?`)}`;
 
   return (
     <AppWindow badge={`${demo.records.length} leads`} onBack={onBack} title="CRM Simple" accentColor={color}>
@@ -49,7 +83,7 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
                 style={active
                   ? { background: color, borderColor: color, color: "white" }
                   : { background: "white", borderColor: "#CCD1C5", color: "#667085" }}
-                onClick={() => setStageFilter(stage)} type="button">
+                onClick={() => handleStageFilter(stage)} type="button">
                 {stage} <span className="opacity-60">{count}</span>
               </button>
             );
@@ -62,7 +96,9 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
       {/* Acciones de hoy */}
       <div className="border-b" style={{ borderColor: "#CCD1C5" }}>
         <div className="border-b px-5 py-1.5" style={{ borderColor: "#CCD1C5", background: "#F6F7F1" }}>
-          <span className="font-mono text-[8px] uppercase tracking-widest" style={{ color: "#98A2B3" }}>Acciones de hoy · 3 pendientes</span>
+          <span className="font-mono text-[8px] uppercase tracking-widest" style={{ color: "#98A2B3" }}>
+            Acciones de hoy · {pendingCount} pendientes
+          </span>
         </div>
         <div className="grid grid-cols-3 divide-x" style={{ borderColor: "#CCD1C5" }}>
           {[
@@ -80,36 +116,50 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
       </div>
 
       <div className="grid md:grid-cols-[1fr_1px_296px]">
+        {/* LEFT — Lead list */}
         <div className={innerView === "detail" ? "hidden md:block" : "block"}>
-          {filtered.map(lead => {
-            const dot = statusColor(lead.status);
-            const isSel = selectedRecord.id === lead.id;
-            const ex = CRM_EXTRA[lead.id] || { prob: 0, timeline: [] };
-            return (
-              <button key={lead.id}
-                className="flex w-full items-center gap-3 border-b px-5 py-3.5 text-left transition last:border-b-0"
-                style={{ borderColor: "#CCD1C5", background: isSel ? `${color}06` : undefined }}
-                onClick={() => { onSelectRecord(lead); setInnerView("detail"); }} type="button">
-                <div className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: dot }} />
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-[14px] font-semibold" style={{ color: "#102033" }}>{lead.name}</p>
-                  <p className="truncate text-[12px]" style={{ color: "#667085" }}>{lead.service}</p>
-                  <p className="font-mono text-[9px] uppercase tracking-wide" style={{ color: dot }}>
-                    {completedRecords[lead.id] || lead.status}
-                  </p>
-                </div>
-                <div className="shrink-0 text-right">
-                  <p className="text-[14px] font-bold tabular-nums" style={{ color: "#102033" }}>{lead.value}</p>
-                  <p className="font-mono text-[9px]" style={{ color: "#98A2B3" }}>{ex.prob}% cierre</p>
-                </div>
-                <ChevR size={14} />
+          {filtered.length === 0 ? (
+            <div className="flex flex-col items-center py-10 text-center">
+              <p className="text-[13px]" style={{ color: "#98A2B3" }}>Sin leads en esta etapa.</p>
+              <button className="mt-3 text-[12px] font-semibold transition hover:opacity-75"
+                style={{ color }}
+                onClick={() => handleStageFilter("Todos")} type="button">
+                Ver todos
               </button>
-            );
-          })}
+            </div>
+          ) : (
+            filtered.map(lead => {
+              const dot = statusColor(lead.status);
+              const isSel = selectedRecord.id === lead.id;
+              const ex = CRM_EXTRA[lead.id] || { prob: 0, timeline: [] };
+              const isDone = Boolean(localFollowupDone[lead.id]) || Boolean(completedRecords[lead.id]);
+              return (
+                <button key={lead.id}
+                  className="flex w-full items-center gap-3 border-b px-5 py-3.5 text-left transition last:border-b-0"
+                  style={{ borderColor: "#CCD1C5", background: isSel ? `${color}06` : undefined }}
+                  onClick={() => { onSelectRecord(lead); setInnerView("detail"); }} type="button">
+                  <div className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: isDone ? "#16A34A" : dot }} />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-[14px] font-semibold" style={{ color: "#102033" }}>{lead.name}</p>
+                    <p className="truncate text-[12px]" style={{ color: "#667085" }}>{lead.service}</p>
+                    <p className="font-mono text-[9px] uppercase tracking-wide" style={{ color: isDone ? "#16A34A" : dot }}>
+                      {isDone ? "Seguimiento registrado" : (completedRecords[lead.id] || lead.status)}
+                    </p>
+                  </div>
+                  <div className="shrink-0 text-right">
+                    <p className="text-[14px] font-bold tabular-nums" style={{ color: "#102033" }}>{lead.value}</p>
+                    <p className="font-mono text-[9px]" style={{ color: "#98A2B3" }}>{ex.prob}% cierre</p>
+                  </div>
+                  <ChevR size={14} />
+                </button>
+              );
+            })
+          )}
         </div>
 
         <div className="hidden md:block" style={{ background: "#CCD1C5" }} />
 
+        {/* RIGHT — Lead detail */}
         <div className={innerView === "list" ? "hidden md:flex md:flex-col" : "flex flex-col"}>
           <button className="flex items-center gap-1.5 border-b px-5 py-3 text-[13px] font-medium md:hidden"
             style={{ borderColor: "#CCD1C5", color }}
@@ -122,7 +172,10 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
             <p className="mt-1 text-[17px] font-semibold leading-tight" style={{ color: "#102033" }}>{selectedRecord.name}</p>
             <p className="mt-0.5 text-[12px]" style={{ color: "#667085" }}>{selectedRecord.service}</p>
             <div className="mt-2 flex items-center justify-between">
-              <StatusChip label={completedRecords[selectedRecord.id] || selectedRecord.status} color={statusColor(selectedRecord.status)} />
+              <StatusChip
+                label={isFollowupDone ? "Seguimiento registrado" : (completedRecords[selectedRecord.id] || selectedRecord.status)}
+                color={isFollowupDone ? "#16A34A" : statusColor(selectedRecord.status)}
+              />
               <span className="text-[18px] font-bold tabular-nums" style={{ color: "#102033" }}>{selectedRecord.value}</span>
             </div>
           </div>
@@ -146,12 +199,12 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
             <p className="mt-1 text-[12px] font-medium" style={{ color: "#102033" }}>{selectedRecord.nextAction}</p>
           </div>
 
-          {extra.timeline.length > 0 && (
+          {mergedTimeline.length > 0 && (
             <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
               <p className="mb-2.5 font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Historial</p>
               <div className="flex flex-col gap-2.5">
-                {extra.timeline.map((ev, i) => (
-                  <div key={i} className="flex items-start gap-2.5">
+                {mergedTimeline.map((ev, i) => (
+                  <div key={`${ev}-${i}`} className="flex items-start gap-2.5">
                     <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full"
                       style={{ background: i === 0 ? color : "#CCD1C5" }} />
                     <p className="text-[11px] leading-snug" style={{ color: i === 0 ? "#102033" : "#98A2B3" }}>{ev}</p>
@@ -168,16 +221,18 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
 
           <div className="flex flex-col gap-2 px-5 pb-5 pt-4">
             <button
-              className="relative w-full overflow-hidden rounded-xl py-3 text-[13px] font-semibold text-white transition disabled:opacity-55"
-              disabled={completed} onClick={onAction}
+              className="relative w-full overflow-hidden rounded-xl py-3 text-[13px] font-semibold text-white transition"
+              disabled={isFollowupDone} onClick={handleFollowup}
               style={{
-                background: completed ? "#334155" : `linear-gradient(to bottom,${color}cc,${color})`,
-                boxShadow: completed ? undefined : `0 4px 16px ${color}44, inset 0 1px 0 rgba(255,255,255,0.14)`,
+                background: isFollowupDone ? "#334155" : `linear-gradient(to bottom,${color}cc,${color})`,
+                boxShadow: isFollowupDone ? undefined : `0 4px 16px ${color}44, inset 0 1px 0 rgba(255,255,255,0.14)`,
+                opacity: isFollowupDone ? 0.65 : 1,
+                cursor: isFollowupDone ? "default" : "pointer",
               }} type="button">
               <span className="pointer-events-none absolute inset-x-0 top-0 h-[44%] rounded-t-xl bg-white/12" />
-              {completed ? "↗ Seguimiento registrado" : "↗ Registrar seguimiento"}
+              {isFollowupDone ? "↗ Seguimiento registrado" : "↗ Registrar seguimiento"}
             </button>
-            <a href={WA} rel="noreferrer" target="_blank"
+            <a href={waLead} rel="noreferrer" target="_blank"
               className="flex w-full items-center justify-center gap-1.5 rounded-xl border py-2.5 text-[12px] font-semibold transition hover:bg-white"
               style={{ borderColor: `${color}30`, color, background: `${color}05` }}>
               ↗ Seguimiento por WhatsApp
@@ -192,7 +247,7 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
         <div className="grid grid-cols-3 divide-x" style={{ borderColor: "#CCD1C5" }}>
           {[
             { label: "Pipeline", value: demo.kpis.find(k => k.label === "Venta estimada")?.value ?? "$87k", sub: `${demo.stages.length} etapas activas`, icon: "↗" },
-            { label: "Recordatorios", value: "3", sub: "seguimientos pendientes hoy", icon: "△" },
+            { label: "Recordatorios", value: String(pendingCount), sub: "seguimientos pendientes hoy", icon: "△" },
             { label: "Reportes", value: "21%", sub: "tasa de conversión actual", icon: "#" },
           ].map((m) => (
             <div key={m.label} className="flex flex-col px-4 py-3.5" style={{ borderColor: "#CCD1C5", background: "#F9F9F5" }}>

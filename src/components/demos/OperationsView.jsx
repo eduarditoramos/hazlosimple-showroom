@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { APP_COLOR, WA, statusColor } from "../../tokens";
+import { APP_COLOR, statusColor } from "../../tokens";
 import AppWindow from "../os/AppWindow";
 import { ChevL, ChevR } from "../ui/Icons";
 import StatusChip from "../ui/StatusChip";
@@ -7,7 +7,9 @@ import StockBar from "../ui/StockBar";
 import DemoKpiRow from "../ui/DemoKpiRow";
 import DemoSectionLabel from "../ui/DemoSectionLabel";
 
-const OPS_TASKS = [
+const WA_BASE = "https://wa.me/522213619628?text=";
+
+const INITIAL_TASKS = [
   { id: "t1", label: "Reabastecer sensores (Pedido #1042)", owner: "Ana", priority: "Alta", done: false },
   { id: "t2", label: "Asignar ruta Pedido #1043", owner: "Luis", priority: "Media", done: false },
   { id: "t3", label: "Cerrar evidencia de entrega #1044", owner: "Mara", priority: "Baja", done: true },
@@ -16,9 +18,57 @@ const OPS_TASKS = [
 
 export default function OperationsView({ completedRecords, demo, onAction, onBack, onSelectRecord, selectedRecord }) {
   const [innerView, setInnerView] = useState("list");
-  const completed = Boolean(completedRecords[selectedRecord.id]);
+  const [localTasks, setLocalTasks] = useState(INITIAL_TASKS);
+  const [localActivity, setLocalActivity] = useState({});
+  const [resolvedAlerts, setResolvedAlerts] = useState({});
+
   const color = APP_COLOR.operacion;
-  const alerts = demo.records.filter(r => r.stockAlert?.includes("ALERTA"));
+
+  const isAlertActive = (order) =>
+    Boolean(order.stockAlert?.includes("ALERTA")) && !resolvedAlerts[order.id];
+
+  const alerts = demo.records.filter(r => isAlertActive(r));
+  const isResolved = Boolean(resolvedAlerts[selectedRecord.id]) || Boolean(completedRecords[selectedRecord.id]);
+  const currentAlert = isAlertActive(selectedRecord);
+
+  const orderActivity = localActivity[selectedRecord.id] || [];
+  const allActivity = [
+    ...orderActivity,
+    { ev: `Pedido asignado a ${selectedRecord.owner}`, t: "Hoy 9:00 AM" },
+    { ev: "Stock verificado en bodega", t: "Ayer 4:30 PM" },
+    { ev: "Pedido aprobado por admin", t: "Hace 2 días" },
+  ];
+
+  const pendingTasks = localTasks.filter(t => !t.done).length;
+
+  const toggleTask = (taskId) => {
+    const task = localTasks.find(t => t.id === taskId);
+    if (!task) return;
+    const newDone = !task.done;
+    setLocalTasks(prev => prev.map(t => t.id === taskId ? { ...t, done: newDone } : t));
+    setLocalActivity(p => ({
+      ...p,
+      [selectedRecord.id]: [
+        { ev: `${task.label.slice(0, 38)}… ${newDone ? "completada" : "reabierta"}`, t: "Ahora" },
+        ...(p[selectedRecord.id] || []),
+      ],
+    }));
+  };
+
+  const handleResolve = () => {
+    if (isResolved) return;
+    setResolvedAlerts(p => ({ ...p, [selectedRecord.id]: true }));
+    setLocalActivity(p => ({
+      ...p,
+      [selectedRecord.id]: [
+        { ev: `${currentAlert ? "Alerta resuelta" : "Estado actualizado"} · ${selectedRecord.order}`, t: "Ahora" },
+        ...(p[selectedRecord.id] || []),
+      ],
+    }));
+    onAction();
+  };
+
+  const waOrder = `${WA_BASE}${encodeURIComponent(`${selectedRecord.order} asignado a ${selectedRecord.owner} — favor de confirmar recepción y avance del pedido.`)}`;
 
   return (
     <AppWindow
@@ -47,14 +97,17 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
       <div className="border-b" style={{ borderColor: "#CCD1C5" }}>
         <div className="border-b px-5 py-1.5" style={{ borderColor: "#CCD1C5", background: "#F6F7F1" }}>
           <span className="font-mono text-[8px] uppercase tracking-widest" style={{ color: "#98A2B3" }}>
-            Tareas urgentes · {OPS_TASKS.filter(t => !t.done && t.priority === "Alta").length} altas
+            Tareas urgentes · {localTasks.filter(t => !t.done && t.priority === "Alta").length} altas
           </span>
         </div>
         <div className="grid grid-cols-2 divide-x" style={{ borderColor: "#CCD1C5" }}>
-          {OPS_TASKS.filter(t => !t.done).slice(0, 2).map((task) => (
+          {localTasks.filter(t => !t.done).slice(0, 2).map((task) => (
             <div key={task.id} className="flex items-start gap-2.5 px-4 py-3" style={{ borderColor: "#CCD1C5" }}>
-              <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border"
-                style={{ borderColor: "#CCD1C5", background: "white" }} />
+              <button
+                className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border transition"
+                style={{ borderColor: "#CCD1C5", background: "white" }}
+                onClick={() => toggleTask(task.id)} type="button"
+              />
               <div className="min-w-0">
                 <p className="text-[11px] font-medium leading-snug" style={{ color: "#102033" }}>{task.label}</p>
                 <div className="mt-1 flex items-center gap-1.5">
@@ -72,10 +125,11 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
       </div>
 
       <div className="grid md:grid-cols-[1fr_1px_284px]">
+        {/* LEFT — Order list */}
         <div className={innerView === "detail" ? "hidden md:block" : "block"}>
           <DemoSectionLabel>Pedidos abiertos · {demo.records.length}</DemoSectionLabel>
           {demo.records.map(order => {
-            const isLow = order.stockAlert?.includes("ALERTA");
+            const isLow = isAlertActive(order);
             const dot = statusColor(order.status);
             const isSel = selectedRecord.id === order.id;
             return (
@@ -93,7 +147,10 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
                 </div>
                 <div className="shrink-0 text-right">
                   <p className="text-[14px] font-bold tabular-nums" style={{ color: "#102033" }}>{order.value}</p>
-                  <StatusChip label={completedRecords[order.id] || order.status} color={dot} />
+                  <StatusChip
+                    label={resolvedAlerts[order.id] ? "Resuelto" : (completedRecords[order.id] || order.status)}
+                    color={resolvedAlerts[order.id] ? "#16A34A" : dot}
+                  />
                 </div>
                 <ChevR size={14} />
               </button>
@@ -103,6 +160,7 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
 
         <div className="hidden md:block" style={{ background: "#CCD1C5" }} />
 
+        {/* RIGHT — Order detail */}
         <div className={innerView === "list" ? "hidden md:flex md:flex-col" : "flex flex-col"}>
           <button className="flex items-center gap-1.5 border-b px-5 py-3 text-[13px] font-medium md:hidden"
             style={{ borderColor: "#CCD1C5", color: "#102033" }}
@@ -115,7 +173,10 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
             <p className="mt-1 text-[17px] font-semibold" style={{ color: "#102033" }}>{selectedRecord.order}</p>
             <p className="text-[12px]" style={{ color: "#667085" }}>{selectedRecord.name}</p>
             <div className="mt-2 flex items-center justify-between">
-              <StatusChip label={completedRecords[selectedRecord.id] || selectedRecord.status} color={statusColor(selectedRecord.status)} />
+              <StatusChip
+                label={isResolved ? "Resuelto" : (completedRecords[selectedRecord.id] || selectedRecord.status)}
+                color={isResolved ? "#16A34A" : statusColor(selectedRecord.status)}
+              />
               <span className="text-[18px] font-bold tabular-nums" style={{ color: "#102033" }}>{selectedRecord.value}</span>
             </div>
           </div>
@@ -136,7 +197,7 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
             <p className="mt-1 text-[12px] leading-relaxed" style={{ color: "#667085" }}>{selectedRecord.products}</p>
           </div>
 
-          {selectedRecord.stockAlert?.includes("ALERTA") && (
+          {currentAlert && !isResolved && (
             <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
               <p className="mb-1.5 font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Alerta de stock</p>
               <div className="rounded-xl border px-3 py-2.5"
@@ -146,19 +207,25 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
             </div>
           )}
 
+          {isResolved && (
+            <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
+              <div className="flex items-center gap-2 rounded-xl border px-3 py-2.5"
+                style={{ borderColor: "#16A34A30", background: "#16A34A08" }}>
+                <div className="h-1.5 w-1.5 rounded-full" style={{ background: "#16A34A" }} />
+                <p className="text-[12px] font-semibold" style={{ color: "#16A34A" }}>Alerta resuelta · Ahora</p>
+              </div>
+            </div>
+          )}
+
           <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
             <p className="mb-2.5 font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Actividad reciente</p>
             <div className="flex flex-col gap-2">
-              {[
-                { ev: `Pedido asignado a ${selectedRecord.owner}`, t: "Hoy 9:00 AM" },
-                { ev: "Stock verificado en bodega", t: "Ayer 4:30 PM" },
-                { ev: "Pedido aprobado por admin", t: "Hace 2 días" },
-              ].map((a, i) => (
+              {allActivity.slice(0, 4).map((a, i) => (
                 <div key={i} className="flex items-start gap-2">
                   <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full"
-                    style={{ background: i === 0 ? "#F59E0B" : "#CCD1C5" }} />
+                    style={{ background: i === 0 && orderActivity.length > 0 ? "#16A34A" : i === 0 ? "#F59E0B" : "#CCD1C5" }} />
                   <div>
-                    <p className="text-[11px]" style={{ color: i === 0 ? "#102033" : "#98A2B3" }}>{a.ev}</p>
+                    <p className="text-[11px]" style={{ color: i < 2 ? "#102033" : "#98A2B3" }}>{a.ev}</p>
                     <p className="font-mono text-[9px]" style={{ color: "#CCD1C5" }}>{a.t}</p>
                   </div>
                 </div>
@@ -166,32 +233,29 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
             </div>
           </div>
 
-          <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
-            <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Notas</p>
-            <p className="mt-1 text-[12px] leading-relaxed" style={{ color: "#667085" }}>{selectedRecord.notes}</p>
-          </div>
           <div className="flex flex-col gap-2 px-5 pb-5 pt-4">
             <button
               className="relative w-full overflow-hidden rounded-xl py-3 text-[13px] font-semibold text-white transition"
-              disabled={completed} onClick={onAction}
+              disabled={isResolved} onClick={handleResolve}
               style={{
-                background: completed
+                background: isResolved
                   ? "linear-gradient(to bottom,#33415599,#334155bb)"
-                  : selectedRecord.stockAlert?.includes("ALERTA")
+                  : currentAlert
                     ? "linear-gradient(to bottom,#D97706cc,#D97706)"
                     : "linear-gradient(to bottom,#082B4Cdd,#082B4C)",
-                boxShadow: completed ? undefined
-                  : selectedRecord.stockAlert?.includes("ALERTA")
+                boxShadow: isResolved ? undefined
+                  : currentAlert
                     ? "0 4px 16px rgba(217,119,6,0.40), inset 0 1px 0 rgba(255,255,255,0.14)"
                     : "0 4px 16px rgba(8,43,76,0.35), inset 0 1px 0 rgba(255,255,255,0.14)",
-                opacity: completed ? 0.7 : 1,
+                opacity: isResolved ? 0.7 : 1,
+                cursor: isResolved ? "default" : "pointer",
               }} type="button">
               <span className="pointer-events-none absolute inset-x-0 top-0 h-[44%] rounded-t-xl bg-white/12" />
-              {completed ? "▣ Estado actualizado"
-                : selectedRecord.stockAlert?.includes("ALERTA") ? "▣ Resolver alerta"
+              {isResolved ? "▣ Estado actualizado"
+                : currentAlert ? "▣ Resolver alerta"
                 : "▣ Actualizar estado"}
             </button>
-            <a href={WA} rel="noreferrer" target="_blank"
+            <a href={waOrder} rel="noreferrer" target="_blank"
               className="flex w-full items-center justify-center rounded-xl border py-2.5 text-[12px] font-semibold transition hover:bg-white"
               style={{ borderColor: "#CCD1C5", color: "#334155" }}>
               Escalar por WhatsApp →
@@ -204,21 +268,23 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
       <div className="border-t" style={{ borderColor: "#CCD1C5" }}>
         <div className="border-b px-5 py-2.5" style={{ background: "#F6F7F1", borderColor: "#CCD1C5" }}>
           <p className="font-mono text-[8px] uppercase tracking-widest" style={{ color: "#98A2B3" }}>
-            Tareas del equipo · {OPS_TASKS.filter(t => !t.done).length} pendientes
+            Tareas del equipo · {pendingTasks} pendientes
           </p>
         </div>
         <div className="grid sm:grid-cols-2">
-          {OPS_TASKS.map((task, i) => (
+          {localTasks.map((task, i) => (
             <div key={task.id}
-              className={`flex items-start gap-3 border-b px-5 py-3 ${i % 2 === 0 ? "sm:border-r" : ""} ${i >= OPS_TASKS.length - 2 ? "sm:border-b-0" : ""}`}
+              className={`flex items-start gap-3 border-b px-5 py-3 ${i % 2 === 0 ? "sm:border-r" : ""} ${i >= localTasks.length - 2 ? "sm:border-b-0" : ""}`}
               style={{ borderColor: "#CCD1C5", background: task.done ? "#F6F7F1" : "white" }}>
-              <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border"
+              <button
+                className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border transition"
                 style={{
                   borderColor: task.done ? "#22C55E" : "#CCD1C5",
                   background: task.done ? "#22C55E" : "white",
-                }}>
+                }}
+                onClick={() => toggleTask(task.id)} type="button">
                 {task.done && <span className="text-[8px] font-bold text-white">✓</span>}
-              </div>
+              </button>
               <div className="min-w-0 flex-1">
                 <p className="text-[12px] font-medium leading-snug"
                   style={{ color: task.done ? "#98A2B3" : "#102033", textDecoration: task.done ? "line-through" : undefined }}>
