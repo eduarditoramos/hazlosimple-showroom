@@ -128,15 +128,18 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
               </button>
             </div>
           ) : (
-            filtered.map(lead => {
+            <div className="space-y-2 p-3">
+            {filtered.map(lead => {
               const dot = statusColor(lead.status);
               const isSel = selectedRecord.id === lead.id;
               const ex = CRM_EXTRA[lead.id] || { prob: 0, timeline: [] };
               const isDone = Boolean(localFollowupDone[lead.id]) || Boolean(completedRecords[lead.id]);
               return (
                 <button key={lead.id}
-                  className="flex w-full items-center gap-3 border-b px-5 py-3.5 text-left transition last:border-b-0"
-                  style={{ borderColor: "#CCD1C5", background: isSel ? `${color}06` : undefined }}
+                  className="flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left transition"
+                  style={isSel
+                    ? { borderColor: `${color}3a`, background: `${color}08`, boxShadow: `0 10px 28px ${color}12` }
+                    : { borderColor: "#E0E4DA", background: "#FFFFFF", boxShadow: "0 8px 20px rgba(16,32,51,0.045)" }}
                   onClick={() => { onSelectRecord(lead); setInnerView("detail"); }} type="button">
                   <div className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: isDone ? "#16A34A" : dot }} />
                   <div className="min-w-0 flex-1">
@@ -153,7 +156,8 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
                   <ChevR size={14} />
                 </button>
               );
-            })
+            })}
+            </div>
           )}
         </div>
 
@@ -167,7 +171,7 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
             <ChevL size={15} /> Atrás
           </button>
 
-          <div className="border-b px-5 py-4" style={{ borderColor: "#CCD1C5", background: `${color}05` }}>
+          <div className="m-3 rounded-2xl border px-5 py-4" style={{ borderColor: `${color}22`, background: `linear-gradient(180deg,${color}08,#FFFFFF)`, boxShadow: "0 12px 30px rgba(16,32,51,0.07)" }}>
             <p className="font-mono text-[8px] uppercase tracking-widest" style={{ color }}>Lead activo</p>
             <p className="mt-1 text-[17px] font-semibold leading-tight" style={{ color: "#102033" }}>{selectedRecord.name}</p>
             <p className="mt-0.5 text-[12px]" style={{ color: "#667085" }}>{selectedRecord.service}</p>
@@ -180,7 +184,7 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
             </div>
           </div>
 
-          <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
+          <div className="mx-3 mb-3 rounded-2xl border px-5 py-3" style={{ borderColor: "#E0E4DA", background: "#FFFFFF" }}>
             <div className="mb-2 flex items-center justify-between">
               <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Prob. de cierre</p>
               <span className="font-mono text-[13px] font-bold"
@@ -194,13 +198,13 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
             </div>
           </div>
 
-          <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
+          <div className="mx-3 mb-3 rounded-2xl border px-5 py-3" style={{ borderColor: "#E0E4DA", background: "#FAFAF6" }}>
             <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Próxima acción</p>
             <p className="mt-1 text-[12px] font-medium" style={{ color: "#102033" }}>{selectedRecord.nextAction}</p>
           </div>
 
           {mergedTimeline.length > 0 && (
-            <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
+            <div className="mx-3 mb-3 rounded-2xl border px-5 py-3" style={{ borderColor: "#E0E4DA", background: "#FFFFFF" }}>
               <p className="mb-2.5 font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Historial</p>
               <div className="flex flex-col gap-2.5">
                 {mergedTimeline.map((ev, i) => (
@@ -214,12 +218,12 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
             </div>
           )}
 
-          <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
+          <div className="mx-3 mb-3 rounded-2xl border px-5 py-3" style={{ borderColor: "#E0E4DA", background: "#FAFAF6" }}>
             <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Notas</p>
             <p className="mt-1 text-[11px] leading-relaxed" style={{ color: "#667085" }}>{selectedRecord.notes}</p>
           </div>
 
-          <div className="flex flex-col gap-2 px-5 pb-5 pt-4">
+          <div className="flex flex-col gap-2 px-5 pb-5 pt-2">
             <button
               className="relative w-full overflow-hidden rounded-xl py-3 text-[13px] font-semibold text-white transition"
               disabled={isFollowupDone} onClick={handleFollowup}

@@ -58,9 +58,9 @@ export default function AgendaView({ completedRecords, demo, onAction, onBack, o
       className="relative w-full overflow-hidden rounded-xl py-3 text-[13px] font-semibold text-white transition"
       disabled={isSent} onClick={handleSendIndicaciones}
       style={{
-        background: isSent ? "#334155" : `linear-gradient(to bottom,${color}dd,${color})`,
-        boxShadow: isSent ? undefined : `0 4px 16px ${color}44, inset 0 1px 0 rgba(255,255,255,0.16)`,
-        opacity: isSent ? 0.7 : 1,
+        background: isSent ? "linear-gradient(to bottom,#334155,#1F2937)" : `linear-gradient(to bottom,${color}dd,${color})`,
+        boxShadow: isSent ? "inset 0 1px 0 rgba(255,255,255,0.10)" : `0 4px 16px ${color}44, inset 0 1px 0 rgba(255,255,255,0.16)`,
+        opacity: 1,
         cursor: isSent ? "default" : "pointer",
       }} type="button">
       <span className="pointer-events-none absolute inset-x-0 top-0 h-[44%] rounded-t-xl bg-white/12" />
@@ -93,14 +93,17 @@ export default function AgendaView({ completedRecords, demo, onAction, onBack, o
         {/* LEFT — Agenda list */}
         <div className={innerView === "detail" ? "hidden md:block" : "block"}>
           <DemoSectionLabel>Citas del día · {demo.records.length} total</DemoSectionLabel>
+          <div className="space-y-2 p-3">
           {demo.records.map(appt => {
             const dot = statusColor(appt.status);
             const isSel = selectedRecord.id === appt.id;
             const apptSent = Boolean(localSentSet[appt.id]) || Boolean(completedRecords[appt.id]);
             return (
               <button key={appt.id}
-                className="grid w-full grid-cols-[64px_12px_1fr] items-start gap-3 border-b px-5 py-3.5 text-left transition last:border-b-0"
-                style={{ borderColor: "#CCD1C5", background: isSel ? `${color}06` : undefined }}
+                className="grid w-full grid-cols-[64px_12px_1fr] items-start gap-3 rounded-2xl border px-4 py-3 text-left transition"
+                style={isSel
+                  ? { borderColor: `${color}3a`, background: `${color}08`, boxShadow: `0 10px 28px ${color}12` }
+                  : { borderColor: "#E0E4DA", background: "#FFFFFF", boxShadow: "0 8px 20px rgba(16,32,51,0.045)" }}
                 onClick={() => { onSelectRecord(appt); setInnerView("detail"); setActiveTab("datos"); }} type="button">
                 <span className="pt-0.5 font-mono text-[12px] font-semibold tabular-nums" style={{ color: "#102033" }}>{appt.time}</span>
                 <div className="mt-1.5 h-2.5 w-2.5 rounded-full"
@@ -116,6 +119,7 @@ export default function AgendaView({ completedRecords, demo, onAction, onBack, o
               </button>
             );
           })}
+          </div>
         </div>
 
         <div className="hidden md:block" style={{ background: "#CCD1C5" }} />
@@ -128,7 +132,7 @@ export default function AgendaView({ completedRecords, demo, onAction, onBack, o
             <ChevL size={15} /> Atrás
           </button>
 
-          <div className="border-b px-5 py-4" style={{ borderColor: "#CCD1C5", background: `${color}05` }}>
+          <div className="m-3 rounded-2xl border px-5 py-4" style={{ borderColor: `${color}24`, background: `linear-gradient(180deg,${color}08,#FFFFFF)`, boxShadow: "0 12px 30px rgba(16,32,51,0.07)" }}>
             <p className="font-mono text-[8px] uppercase tracking-widest" style={{ color }}>Paciente</p>
             <p className="mt-1 text-[17px] font-semibold" style={{ color: "#102033" }}>{selectedRecord.name}</p>
             <p className="text-[12px]" style={{ color }}>{selectedRecord.service}</p>
@@ -142,13 +146,13 @@ export default function AgendaView({ completedRecords, demo, onAction, onBack, o
           </div>
 
           {/* Tabs */}
-          <div className="flex border-b" style={{ borderColor: "#CCD1C5", background: "#F0F1EC" }}>
+          <div className="mx-3 mb-3 flex rounded-2xl border p-1" style={{ borderColor: "#E0E4DA", background: "#F0F1EC" }}>
             {TABS.map(tab => (
               <button key={tab.id}
-                className="flex-1 py-3 font-mono text-[9px] font-bold uppercase tracking-wider transition"
+                className="flex-1 rounded-xl py-2.5 font-mono text-[9px] font-bold uppercase tracking-wider transition"
                 style={activeTab === tab.id
-                  ? { color, borderBottom: `2.5px solid ${color}`, background: "white", boxShadow: `0 -2px 0 0 ${color}22 inset` }
-                  : { color: "#667085", borderBottom: "2.5px solid transparent", background: "transparent" }}
+                  ? { color, background: "white", boxShadow: "0 6px 16px rgba(16,32,51,0.08)" }
+                  : { color: "#667085", background: "transparent" }}
                 onClick={() => setActiveTab(tab.id)} type="button">
                 {tab.label}
               </button>
@@ -159,7 +163,7 @@ export default function AgendaView({ completedRecords, demo, onAction, onBack, o
           {activeTab === "datos" && (
             <div className="flex flex-col">
               <div className="grid grid-cols-2 border-b" style={{ borderColor: "#CCD1C5" }}>
-                <div className="border-r px-4 py-3" style={{ borderColor: "#CCD1C5" }}>
+                <div className="border-r px-4 py-3" style={{ borderColor: "#E0E4DA" }}>
                   <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Valor de cita</p>
                   <p className="mt-0.5 text-[18px] font-bold tabular-nums" style={{ color: "#102033" }}>{selectedRecord.value}</p>
                 </div>
@@ -168,15 +172,15 @@ export default function AgendaView({ completedRecords, demo, onAction, onBack, o
                   <p className="mt-0.5 font-mono text-[15px] font-bold tabular-nums" style={{ color }}>{selectedRecord.time}</p>
                 </div>
               </div>
-              <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
+              <div className="mx-3 mb-3 rounded-2xl border px-5 py-3" style={{ borderColor: "#E0E4DA", background: "#FFFFFF" }}>
                 <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Notas</p>
                 <p className="mt-1 text-[12px] leading-relaxed" style={{ color: "#667085" }}>{selectedRecord.notes}</p>
               </div>
-              <div className="border-b px-5 py-2.5" style={{ borderColor: "#CCD1C5" }}>
+              <div className="mx-3 mb-3 rounded-2xl border px-5 py-2.5" style={{ borderColor: "#E0E4DA", background: "#FAFAF6" }}>
                 <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Próxima acción</p>
                 <p className="mt-0.5 text-[12px] font-medium" style={{ color: "#102033" }}>{selectedRecord.nextAction}</p>
               </div>
-              <div className="flex items-center gap-2 px-5 py-2.5" style={{ background: `${color}06` }}>
+              <div className="mx-3 mb-3 flex items-center gap-2 rounded-2xl px-4 py-2.5" style={{ background: `${color}06` }}>
                 <span className="font-mono text-[8px]" style={{ color: "#98A2B3" }}>Ver también:</span>
                 {["Indicaciones", "Archivos", "Seguimiento"].map(t => (
                   <button key={t}

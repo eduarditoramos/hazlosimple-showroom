@@ -85,7 +85,7 @@ export default function RestaurantView({ completedRecords, demo, onAction, onBac
               Tablero de comandas · {demo.records.length} pedidos
             </span>
           </div>
-          <div className="grid grid-cols-2 gap-3 p-3">
+          <div className="grid grid-cols-2 gap-2.5 p-3" style={{ background: "#F6F7F1" }}>
             {demo.records.map(order => {
               const stage = getStage(order);
               const dot = statusColor(order.status);
@@ -94,10 +94,10 @@ export default function RestaurantView({ completedRecords, demo, onAction, onBac
               const displayLabel = COCINA_LABEL[stage] || stage;
               return (
                 <button key={order.id}
-                  className="flex flex-col rounded-xl border p-3 text-left transition"
+                  className="flex flex-col rounded-2xl border p-3 text-left transition"
                   style={isSel
-                    ? { borderColor: `${color}50`, background: `${color}08`, boxShadow: `0 0 0 2px ${color}22` }
-                    : { borderColor: "#CCD1C5", background: isActive ? "white" : "#F9F9F5", opacity: isActive ? 1 : 0.55 }}
+                    ? { borderColor: `${color}42`, background: `${color}08`, boxShadow: `0 10px 28px ${color}16` }
+                    : { borderColor: "#E0E4DA", background: isActive ? "#FFFFFF" : "#F9F9F5", opacity: isActive ? 1 : 0.55, boxShadow: "0 8px 20px rgba(16,32,51,0.045)" }}
                   onClick={() => { onSelectRecord(order); setInnerView("detail"); }} type="button">
                   <div className="mb-2 flex items-center justify-between">
                     <p className="font-mono text-[11px] font-bold uppercase tracking-wide" style={{ color: "#102033" }}>{order.name}</p>
@@ -131,7 +131,7 @@ export default function RestaurantView({ completedRecords, demo, onAction, onBac
             <ChevL size={15} /> Atrás
           </button>
 
-          <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5", background: `${color}05` }}>
+          <div className="m-3 rounded-2xl border px-5 py-3" style={{ borderColor: `${color}24`, background: `linear-gradient(180deg,${color}08,#FFFFFF)`, boxShadow: "0 12px 30px rgba(16,32,51,0.07)" }}>
             <p className="font-mono text-[8px] uppercase tracking-widest" style={{ color }}>Comanda activa</p>
             <div className="mt-1 flex items-center justify-between">
               <p className="font-mono text-[15px] font-bold uppercase" style={{ color: "#102033" }}>{selectedRecord.name}</p>
@@ -143,23 +143,23 @@ export default function RestaurantView({ completedRecords, demo, onAction, onBac
             />
           </div>
 
-          <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
+          <div className="mx-3 mb-3 rounded-2xl border px-5 py-3" style={{ borderColor: "#E0E4DA", background: "#FFFFFF" }}>
             <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Productos</p>
             <p className="mt-1 text-[12px] leading-relaxed" style={{ color: "#102033" }}>{selectedRecord.products}</p>
           </div>
 
-          <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
+          <div className="mx-3 mb-3 rounded-2xl border px-5 py-3" style={{ borderColor: "#E0E4DA", background: "#FAFAF6" }}>
             <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Nota de cocina</p>
             <p className="mt-1 text-[12px]" style={{ color: "#667085" }}>{selectedRecord.notes}</p>
           </div>
 
-          <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
+          <div className="mx-3 mb-3 rounded-2xl border px-5 py-3" style={{ borderColor: "#E0E4DA", background: "#FFFFFF" }}>
             <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Método de pago</p>
             <p className="mt-1 text-[13px] font-semibold" style={{ color: "#102033" }}>{selectedRecord.paymentMethod}</p>
           </div>
 
           {orderActivity.length > 0 && (
-            <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
+            <div className="mx-3 mb-3 rounded-2xl border px-5 py-3" style={{ borderColor: "#E0E4DA", background: "#FFFFFF" }}>
               <p className="mb-2 font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Actividad</p>
               <div className="flex flex-col gap-2">
                 {orderActivity.map((a, i) => (
@@ -174,7 +174,7 @@ export default function RestaurantView({ completedRecords, demo, onAction, onBac
             </div>
           )}
 
-          <div className="flex flex-col gap-2 px-5 pb-5 pt-4">
+          <div className="flex flex-col gap-2 px-5 pb-5 pt-2">
             <button
               className="relative w-full overflow-hidden rounded-xl py-3 text-[13px] font-semibold text-white transition"
               disabled={isMarkedListo} onClick={handleMarkListo}
@@ -198,7 +198,7 @@ export default function RestaurantView({ completedRecords, demo, onAction, onBac
 
       {/* Corte del día + inventario */}
       <div className="grid border-t sm:grid-cols-2" style={{ borderColor: "#CCD1C5" }}>
-        <div className="border-b p-4 sm:border-b-0 sm:border-r" style={{ borderColor: "#CCD1C5", background: "#F9F9F5" }}>
+        <div className="border-b p-4 sm:border-b-0 sm:border-r" style={{ borderColor: "#D8DCD2", background: "#F9F9F5" }}>
           <p className="mb-3 font-mono text-[8px] uppercase tracking-widest" style={{ color: "#98A2B3" }}>Corte del día</p>
           <div className="flex flex-wrap gap-x-5 gap-y-2">
             {demo.kpis.map(k => (
@@ -213,7 +213,7 @@ export default function RestaurantView({ completedRecords, demo, onAction, onBac
           <p className="mb-3 font-mono text-[8px] uppercase tracking-widest" style={{ color: "#98A2B3" }}>Inventario básico</p>
           <div className="flex flex-col gap-2">
             {REST_INVENTORY.map(it => (
-              <div key={it.item} className="flex items-center gap-2">
+              <div key={it.item} className="flex items-center gap-2 rounded-xl px-2 py-1.5" style={{ background: "#FFFFFF" }}>
                 <div className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: it.ok ? "#22C55E" : "#F59E0B" }} />
                 <span className="flex-1 text-[11px]" style={{ color: "#667085" }}>{it.item}</span>
                 <div className="flex h-1.5 w-14 overflow-hidden rounded-full" style={{ background: "#E2E8F0" }}>

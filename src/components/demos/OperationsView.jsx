@@ -73,11 +73,11 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
   return (
     <AppWindow
       badge={alerts.length > 0 ? `${alerts.length} alerta${alerts.length > 1 ? "s" : ""}` : undefined}
-      onBack={onBack} title="Control Operativo" accentColor="#F59E0B"
+      onBack={onBack} title="Control Operativo" accentColor={color}
     >
       {alerts.length > 0 && (
         <div className="flex items-center justify-between gap-3 border-b px-5 py-2.5"
-          style={{ background: "rgba(245,158,11,0.08)", borderColor: "#CCD1C5" }}>
+          style={{ background: "rgba(245,158,11,0.07)", borderColor: "#E0E4DA" }}>
           <div className="flex items-center gap-2">
             <div className="h-2 w-2 shrink-0 rounded-full" style={{ background: "#F59E0B" }} />
             <p className="text-[12px] font-semibold" style={{ color: "#B45309" }}>
@@ -100,9 +100,9 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
             Tareas urgentes · {localTasks.filter(t => !t.done && t.priority === "Alta").length} altas
           </span>
         </div>
-        <div className="grid grid-cols-2 divide-x" style={{ borderColor: "#CCD1C5" }}>
+        <div className="grid grid-cols-2 gap-2 p-3" style={{ background: "#F6F7F1" }}>
           {localTasks.filter(t => !t.done).slice(0, 2).map((task) => (
-            <div key={task.id} className="flex items-start gap-2.5 px-4 py-3" style={{ borderColor: "#CCD1C5" }}>
+            <div key={task.id} className="flex items-start gap-2.5 rounded-2xl border px-4 py-3" style={{ borderColor: "#E0E4DA", background: "#FFFFFF", boxShadow: "0 8px 20px rgba(16,32,51,0.045)" }}>
               <button
                 className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border transition"
                 style={{ borderColor: "#CCD1C5", background: "white" }}
@@ -128,14 +128,17 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
         {/* LEFT — Order list */}
         <div className={innerView === "detail" ? "hidden md:block" : "block"}>
           <DemoSectionLabel>Pedidos abiertos · {demo.records.length}</DemoSectionLabel>
+          <div className="space-y-2 p-3">
           {demo.records.map(order => {
             const isLow = isAlertActive(order);
             const dot = statusColor(order.status);
             const isSel = selectedRecord.id === order.id;
             return (
               <button key={order.id}
-                className="flex w-full items-center gap-3 border-b px-5 py-3.5 text-left transition last:border-b-0"
-                style={{ borderColor: "#CCD1C5", background: isSel ? `${color}06` : undefined }}
+                className="flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left transition"
+                style={isSel
+                  ? { borderColor: `${color}38`, background: `${color}07`, boxShadow: `0 10px 28px ${color}12` }
+                  : { borderColor: isLow ? "rgba(245,158,11,0.28)" : "#E0E4DA", background: "#FFFFFF", boxShadow: "0 8px 20px rgba(16,32,51,0.045)" }}
                 onClick={() => { onSelectRecord(order); setInnerView("detail"); }} type="button">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1.5">
@@ -156,6 +159,7 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
               </button>
             );
           })}
+          </div>
         </div>
 
         <div className="hidden md:block" style={{ background: "#CCD1C5" }} />
@@ -168,7 +172,7 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
             <ChevL size={15} /> Atrás
           </button>
 
-          <div className="border-b px-5 py-4" style={{ borderColor: "#CCD1C5", background: `${color}04` }}>
+          <div className="m-3 rounded-2xl border px-5 py-4" style={{ borderColor: `${color}22`, background: `linear-gradient(180deg,${color}07,#FFFFFF)`, boxShadow: "0 12px 30px rgba(16,32,51,0.07)" }}>
             <p className="font-mono text-[8px] uppercase tracking-widest" style={{ color: "#98A2B3" }}>Pedido activo</p>
             <p className="mt-1 text-[17px] font-semibold" style={{ color: "#102033" }}>{selectedRecord.order}</p>
             <p className="text-[12px]" style={{ color: "#667085" }}>{selectedRecord.name}</p>
@@ -181,8 +185,8 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
             </div>
           </div>
 
-          <div className="grid grid-cols-2 border-b" style={{ borderColor: "#CCD1C5" }}>
-            <div className="border-r px-4 py-3" style={{ borderColor: "#CCD1C5" }}>
+          <div className="mx-3 mb-3 grid grid-cols-2 overflow-hidden rounded-2xl border" style={{ borderColor: "#E0E4DA", background: "#FFFFFF" }}>
+            <div className="border-r px-4 py-3" style={{ borderColor: "#E0E4DA" }}>
               <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Responsable</p>
               <p className="mt-1 text-[13px] font-semibold" style={{ color: "#102033" }}>{selectedRecord.owner}</p>
             </div>
@@ -192,13 +196,13 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
             </div>
           </div>
 
-          <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
+          <div className="mx-3 mb-3 rounded-2xl border px-5 py-3" style={{ borderColor: "#E0E4DA", background: "#FAFAF6" }}>
             <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Productos</p>
             <p className="mt-1 text-[12px] leading-relaxed" style={{ color: "#667085" }}>{selectedRecord.products}</p>
           </div>
 
           {currentAlert && !isResolved && (
-            <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
+            <div className="mx-3 mb-3 rounded-2xl border px-5 py-3" style={{ borderColor: "rgba(245,158,11,0.22)", background: "rgba(245,158,11,0.04)" }}>
               <p className="mb-1.5 font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Alerta de stock</p>
               <div className="rounded-xl border px-3 py-2.5"
                 style={{ borderColor: "rgba(245,158,11,0.30)", background: "rgba(245,158,11,0.08)" }}>
@@ -208,7 +212,7 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
           )}
 
           {isResolved && (
-            <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
+            <div className="mx-3 mb-3 rounded-2xl border px-5 py-3" style={{ borderColor: "#16A34A30", background: "#16A34A06" }}>
               <div className="flex items-center gap-2 rounded-xl border px-3 py-2.5"
                 style={{ borderColor: "#16A34A30", background: "#16A34A08" }}>
                 <div className="h-1.5 w-1.5 rounded-full" style={{ background: "#16A34A" }} />
@@ -217,7 +221,7 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
             </div>
           )}
 
-          <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5" }}>
+          <div className="mx-3 mb-3 rounded-2xl border px-5 py-3" style={{ borderColor: "#E0E4DA", background: "#FFFFFF" }}>
             <p className="mb-2.5 font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Actividad reciente</p>
             <div className="flex flex-col gap-2">
               {allActivity.slice(0, 4).map((a, i) => (
@@ -233,20 +237,16 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 px-5 pb-5 pt-4">
+          <div className="flex flex-col gap-2 px-5 pb-5 pt-2">
             <button
               className="relative w-full overflow-hidden rounded-xl py-3 text-[13px] font-semibold text-white transition"
               disabled={isResolved} onClick={handleResolve}
               style={{
                 background: isResolved
                   ? "linear-gradient(to bottom,#33415599,#334155bb)"
-                  : currentAlert
-                    ? "linear-gradient(to bottom,#D97706cc,#D97706)"
-                    : "linear-gradient(to bottom,#082B4Cdd,#082B4C)",
+                  : "linear-gradient(to bottom,#334155,#102033)",
                 boxShadow: isResolved ? undefined
-                  : currentAlert
-                    ? "0 4px 16px rgba(217,119,6,0.40), inset 0 1px 0 rgba(255,255,255,0.14)"
-                    : "0 4px 16px rgba(8,43,76,0.35), inset 0 1px 0 rgba(255,255,255,0.14)",
+                  : "0 4px 16px rgba(16,32,51,0.35), inset 0 1px 0 rgba(255,255,255,0.14)",
                 opacity: isResolved ? 0.7 : 1,
                 cursor: isResolved ? "default" : "pointer",
               }} type="button">
@@ -271,11 +271,11 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
             Tareas del equipo · {pendingTasks} pendientes
           </p>
         </div>
-        <div className="grid sm:grid-cols-2">
+        <div className="grid gap-2 p-3 sm:grid-cols-2" style={{ background: "#F6F7F1" }}>
           {localTasks.map((task, i) => (
             <div key={task.id}
-              className={`flex items-start gap-3 border-b px-5 py-3 ${i % 2 === 0 ? "sm:border-r" : ""} ${i >= localTasks.length - 2 ? "sm:border-b-0" : ""}`}
-              style={{ borderColor: "#CCD1C5", background: task.done ? "#F6F7F1" : "white" }}>
+              className="flex items-start gap-3 rounded-2xl border px-4 py-3"
+              style={{ borderColor: "#E0E4DA", background: task.done ? "#F6F7F1" : "white", boxShadow: task.done ? undefined : "0 8px 20px rgba(16,32,51,0.045)" }}>
               <button
                 className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border transition"
                 style={{
