@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- OS desktop background -->
+  <rect width="1200" height="630" fill="#E8E7E2"/>
+  <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="10" cy="10" r="0.9" fill="rgba(0,0,0,0.07)"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+
+  <!-- Drop shadow filter -->
+  <defs>
+    <filter id="sh" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="10" stdDeviation="22" flood-color="rgba(0,0,0,0.14)"/>
+    </filter>
+  </defs>
+
+  <!-- Main window card -->
+  <rect x="60" y="50" width="1080" height="530" rx="20" fill="white" filter="url(#sh)"/>
+
+  <!-- Window chrome bar -->
+  <rect x="60" y="50" width="1080" height="44" rx="20" fill="#EFEEEA"/>
+  <rect x="60" y="74" width="1080" height="20" fill="#EFEEEA"/>
+  <!-- Traffic lights -->
+  <circle cx="96" cy="72" r="7" fill="#FF5F57"/>
+  <circle cx="118" cy="72" r="7" fill="#FEBC2E"/>
+  <circle cx="140" cy="72" r="7" fill="#28C840"/>
+  <!-- Window title mono -->
+  <text x="600" y="77" font-family="'Courier New',Courier,monospace" font-size="12" font-weight="500" fill="#202124" fill-opacity="0.36" text-anchor="middle" letter-spacing="0.04em">HazloSimple OS · App Showroom</text>
+
+  <!-- HS icon -->
+  <rect x="88" y="116" width="52" height="52" rx="13" fill="#C65F28"/>
+  <rect x="97" y="124" width="5" height="22" rx="2" fill="white"/>
+  <rect x="111" y="124" width="5" height="22" rx="2" fill="white"/>
+  <rect x="99" y="133" width="14" height="4" rx="1.5" fill="white"/>
+
+  <!-- Brand label -->
+  <text x="152" y="136" font-family="'Courier New',Courier,monospace" font-size="11" font-weight="700" fill="#C65F28" letter-spacing="0.15em">HAZLOSIMPLE OS</text>
+  <text x="152" y="157" font-family="'Courier New',Courier,monospace" font-size="10" fill="#202124" fill-opacity="0.35" letter-spacing="0.08em">App Showroom</text>
+
+  <!-- Main headline -->
+  <text x="88" y="222" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="40" font-weight="700" fill="#202124">Apps web para negocios reales.</text>
+  <text x="88" y="258" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="18" fill="#34363A" fill-opacity="0.50">Prueba demos de CRM, cocina, clínica y operación.</text>
+
+  <!-- App icons row -->
+  <!-- CRM -->
+  <rect x="88" y="295" width="68" height="68" rx="18" fill="#4338CA"/>
+  <text x="122" y="337" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="24" font-weight="800" fill="white" text-anchor="middle">C</text>
+  <!-- mini bars -->
+  <rect x="103" y="352" width="5" height="4" rx="1" fill="rgba(255,255,255,0.4)"/>
+  <rect x="110" y="349" width="5" height="7" rx="1" fill="rgba(255,255,255,0.4)"/>
+  <rect x="117" y="347" width="5" height="9" rx="1" fill="rgba(255,255,255,0.4)"/>
+  <rect x="124" y="344" width="5" height="12" rx="1" fill="rgba(255,255,255,0.4)"/>
+  <text x="122" y="381" font-family="'Courier New',monospace" font-size="11" font-weight="600" fill="#202124" fill-opacity="0.44" text-anchor="middle">CRM</text>
+
+  <!-- Cocina -->
+  <rect x="176" y="295" width="68" height="68" rx="18" fill="#C65F28"/>
+  <text x="210" y="332" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="17" font-weight="800" fill="white" text-anchor="middle">Co</text>
+  <!-- receipt lines -->
+  <rect x="192" y="342" width="36" height="2.5" rx="1" fill="rgba(255,255,255,0.36)"/>
+  <rect x="197" y="348" width="26" height="2.5" rx="1" fill="rgba(255,255,255,0.24)"/>
+  <rect x="194" y="354" width="30" height="2.5" rx="1" fill="rgba(255,255,255,0.24)"/>
+  <text x="210" y="381" font-family="'Courier New',monospace" font-size="11" font-weight="600" fill="#202124" fill-opacity="0.44" text-anchor="middle">Cocina</text>
+
+  <!-- Clínica -->
+  <rect x="264" y="295" width="68" height="68" rx="18" fill="#0D9488"/>
+  <text x="298" y="336" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="30" font-weight="700" fill="white" text-anchor="middle">+</text>
+  <!-- appointment dots -->
+  <circle cx="288" cy="356" r="5" fill="rgba(40,200,64,0.78)"/>
+  <circle cx="298" cy="356" r="5" fill="rgba(254,188,46,0.82)"/>
+  <circle cx="308" cy="356" r="5" fill="rgba(255,255,255,0.36)"/>
+  <text x="298" y="381" font-family="'Courier New',monospace" font-size="11" font-weight="600" fill="#202124" fill-opacity="0.44" text-anchor="middle">Clínica</text>
+
+  <!-- Operación -->
+  <rect x="352" y="295" width="68" height="68" rx="18" fill="#3D3E42"/>
+  <text x="386" y="331" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="15" font-weight="800" fill="white" text-anchor="middle">Op</text>
+  <!-- stock bars -->
+  <rect x="367" y="342" width="6" height="12" rx="1.5" fill="rgba(255,255,255,0.38)"/>
+  <rect x="376" y="349" width="6" height="5" rx="1.5" fill="rgba(254,188,46,0.85)"/>
+  <rect x="385" y="344" width="6" height="10" rx="1.5" fill="rgba(255,255,255,0.38)"/>
+  <rect x="394" y="342" width="6" height="12" rx="1.5" fill="rgba(255,255,255,0.38)"/>
+  <text x="386" y="381" font-family="'Courier New',monospace" font-size="11" font-weight="600" fill="#202124" fill-opacity="0.44" text-anchor="middle">Operación</text>
+
+  <!-- Right side: CRM console preview -->
+  <rect x="500" y="100" width="580" height="430" rx="14" fill="#FAFAF8" stroke="#DFDDD4" stroke-width="1.5"/>
+  <!-- Console chrome -->
+  <rect x="500" y="100" width="580" height="38" rx="14" fill="#EEEDE9"/>
+  <rect x="500" y="124" width="580" height="14" fill="#EEEDE9"/>
+  <circle cx="522" cy="119" r="5" fill="#FF5F57"/>
+  <circle cx="538" cy="119" r="5" fill="#FEBC2E"/>
+  <circle cx="554" cy="119" r="5" fill="#28C840"/>
+  <text x="790" y="124" font-family="'Courier New',monospace" font-size="10" fill="#202124" fill-opacity="0.34" text-anchor="middle" letter-spacing="0.04em">CRM Simple</text>
+
+  <!-- Pipeline bar -->
+  <text x="520" y="158" font-family="'Courier New',monospace" font-size="9" font-weight="600" fill="#4338CA" fill-opacity="0.55" letter-spacing="0.1em">PIPELINE ACTIVO</text>
+  <rect x="520" y="166" width="540" height="7" rx="3.5" fill="#E8E7E2"/>
+  <rect x="520" y="166" width="95" height="7" rx="3.5" fill="#C8C7C3"/>
+  <rect x="615" y="166" width="115" height="7" rx="0" fill="#6366F1" fill-opacity="0.45"/>
+  <rect x="730" y="166" width="115" height="7" rx="0" fill="#6366F1" fill-opacity="0.68"/>
+  <rect x="845" y="166" width="100" height="7" rx="0" fill="#C65F28" fill-opacity="0.62"/>
+  <rect x="945" y="166" width="115" height="7" rx="3.5" fill="#28C840"/>
+
+  <!-- KPI tiles -->
+  <rect x="520" y="186" width="98" height="44" rx="10" fill="white" stroke="#DFDDD4" stroke-width="1"/>
+  <text x="569" y="203" font-family="'Courier New',monospace" font-size="8" fill="#202124" fill-opacity="0.36" text-anchor="middle">PROSPECTOS</text>
+  <text x="569" y="223" font-family="-apple-system,Arial,sans-serif" font-size="18" font-weight="700" fill="#4338CA" text-anchor="middle">24</text>
+
+  <rect x="628" y="186" width="98" height="44" rx="10" fill="white" stroke="#DFDDD4" stroke-width="1"/>
+  <text x="677" y="203" font-family="'Courier New',monospace" font-size="8" fill="#202124" fill-opacity="0.36" text-anchor="middle">COTIZACIONES</text>
+  <text x="677" y="223" font-family="-apple-system,Arial,sans-serif" font-size="18" font-weight="700" fill="#4338CA" text-anchor="middle">7</text>
+
+  <rect x="736" y="186" width="98" height="44" rx="10" fill="white" stroke="#DFDDD4" stroke-width="1"/>
+  <text x="785" y="203" font-family="'Courier New',monospace" font-size="8" fill="#202124" fill-opacity="0.36" text-anchor="middle">ESTIMADO</text>
+  <text x="785" y="223" font-family="-apple-system,Arial,sans-serif" font-size="18" font-weight="700" fill="#4338CA" text-anchor="middle">$87k</text>
+
+  <rect x="844" y="186" width="98" height="44" rx="10" fill="white" stroke="#DFDDD4" stroke-width="1"/>
+  <text x="893" y="203" font-family="'Courier New',monospace" font-size="8" fill="#202124" fill-opacity="0.36" text-anchor="middle">SEGUIMIENTOS</text>
+  <text x="893" y="223" font-family="-apple-system,Arial,sans-serif" font-size="18" font-weight="700" fill="#4338CA" text-anchor="middle">9</text>
+
+  <!-- Lead rows -->
+  <rect x="520" y="244" width="285" height="38" rx="0" fill="#4338CA" fill-opacity="0.05"/>
+  <circle cx="535" cy="263" r="4.5" fill="#FEBC2E"/>
+  <text x="550" y="268" font-family="-apple-system,Arial,sans-serif" font-size="13" font-weight="600" fill="#202124">Mariana López</text>
+  <text x="798" y="268" font-family="-apple-system,Arial,sans-serif" font-size="13" font-weight="700" fill="#202124" text-anchor="end">$18,500</text>
+  <line x1="520" y1="282" x2="806" y2="282" stroke="#DFDDD4" stroke-width="0.8"/>
+
+  <circle cx="535" cy="301" r="4.5" fill="#28C840"/>
+  <text x="550" y="306" font-family="-apple-system,Arial,sans-serif" font-size="13" font-weight="600" fill="#202124">Clínica Santa Fe</text>
+  <text x="798" y="306" font-family="-apple-system,Arial,sans-serif" font-size="13" font-weight="700" fill="#202124" text-anchor="end">$41,500</text>
+  <line x1="520" y1="320" x2="806" y2="320" stroke="#DFDDD4" stroke-width="0.8"/>
+
+  <circle cx="535" cy="339" r="4.5" fill="#6366F1" fill-opacity="0.7"/>
+  <text x="550" y="344" font-family="-apple-system,Arial,sans-serif" font-size="13" font-weight="600" fill="#202124">Casa Rivera</text>
+  <text x="798" y="344" font-family="-apple-system,Arial,sans-serif" font-size="13" font-weight="700" fill="#202124" text-anchor="end">$24,000</text>
+  <line x1="520" y1="358" x2="806" y2="358" stroke="#DFDDD4" stroke-width="0.8"/>
+
+  <circle cx="535" cy="377" r="4.5" fill="#C8C7C3"/>
+  <text x="550" y="382" font-family="-apple-system,Arial,sans-serif" font-size="13" font-weight="600" fill="#202124">Dra. Valeria Soto</text>
+  <text x="798" y="382" font-family="-apple-system,Arial,sans-serif" font-size="13" font-weight="700" fill="#202124" text-anchor="end">$12,800</text>
+
+  <!-- Detail panel hint -->
+  <rect x="816" y="244" width="244" height="174" rx="0" fill="#4338CA" fill-opacity="0.025"/>
+  <text x="832" y="270" font-family="'Courier New',monospace" font-size="9" fill="#4338CA" fill-opacity="0.6" letter-spacing="0.1em">LEAD CALIENTE</text>
+  <text x="832" y="290" font-family="-apple-system,Arial,sans-serif" font-size="15" font-weight="700" fill="#202124">Mariana López</text>
+  <text x="832" y="318" font-family="-apple-system,Arial,sans-serif" font-size="24" font-weight="800" fill="#202124">$18,500</text>
+  <text x="832" y="340" font-family="'Courier New',monospace" font-size="9" fill="#202124" fill-opacity="0.38" letter-spacing="0.06em">PRÓXIMA ACCIÓN</text>
+  <text x="832" y="358" font-family="-apple-system,Arial,sans-serif" font-size="12" fill="#202124" fill-opacity="0.6">Confirmar cita hoy 4:30 PM.</text>
+  <!-- CTA button -->
+  <rect x="832" y="372" width="200" height="34" rx="10" fill="#4338CA"/>
+  <text x="932" y="394" font-family="-apple-system,Arial,sans-serif" font-size="12" font-weight="600" fill="white" text-anchor="middle">Marcar seguimiento</text>
+
+  <!-- Bottom domain -->
+  <text x="600" y="598" font-family="'Courier New',monospace" font-size="13" fill="#202124" fill-opacity="0.32" text-anchor="middle" letter-spacing="0.04em">hazlosimple-os.netlify.app</text>
+</svg>
