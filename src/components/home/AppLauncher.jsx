@@ -1,4 +1,5 @@
 import { APP_COLOR } from "../../tokens";
+import { AppProductIcon } from "../ui/Icons";
 
 export const APPS = [
   { id: "crm",       label: "CRM Simple",         glyph: "C",  demoIdx: 0, badge: "24", status: "3 seguimientos hoy"        },
@@ -41,7 +42,6 @@ const ICON_DECOR = {
 
 function AppIcon({ app, active, onClick }) {
   const color = APP_COLOR[app.id];
-  const glyphSize = app.glyph === "+" ? "text-[28px]" : app.glyph.length > 1 ? "text-[17px] font-extrabold" : "text-[24px]";
   return (
     <button className="group flex flex-col items-center gap-2 focus:outline-none" onClick={onClick} type="button">
       <div className="relative flex h-[72px] w-[72px] select-none items-center justify-center overflow-hidden rounded-[20px] transition-all duration-200 group-hover:-translate-y-1"
@@ -54,7 +54,9 @@ function AppIcon({ app, active, onClick }) {
         }}>
         <div className="pointer-events-none absolute inset-x-0 top-0 h-[46%] rounded-t-[20px] bg-gradient-to-b from-white/32 to-transparent" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[30%] rounded-b-[20px] bg-gradient-to-t from-black/15 to-transparent" />
-        <span className={`relative z-10 -mt-3 font-bold text-white ${glyphSize}`}>{app.glyph}</span>
+        <span className="relative z-10 -mt-3 text-white">
+          <AppProductIcon type={app.id} size={28} />
+        </span>
         {ICON_DECOR[app.id]}
       </div>
       <div className="flex flex-col items-center gap-0.5">

@@ -36,8 +36,9 @@ export default function CTAFinal() {
             <span style={{ color: "#4ADE80" }}>Datos que impulsan tu crecimiento.</span>
           </h2>
 
-          {/* Subtext */}
-          <p className="mx-auto mt-4 max-w-md text-[14px] leading-relaxed text-white/70">
+          {/* CTAFinal trust copy - force light text on navy */}
+          <p className="mx-auto mt-4 max-w-md text-[14px] leading-relaxed"
+            style={{ color: "rgba(255,255,255,0.78)", opacity: 1 }}>
             Sin backend complejo · Sin login complicado · Sin instalaciones · Demo funcional
           </p>
 
@@ -54,14 +55,16 @@ export default function CTAFinal() {
               Quiero mi app a medida →
             </a>
             <button
-              className="w-full rounded-xl border px-7 py-3.5 text-[14px] font-semibold text-white/90 transition sm:w-auto"
+              className="w-full rounded-xl border px-7 py-3.5 text-[14px] font-semibold transition sm:w-auto"
               style={{
-                borderColor: "rgba(255,255,255,0.28)",
-                background: "rgba(255,255,255,0.08)",
+                color: "rgba(255,255,255,0.92)",
+                borderColor: "rgba(255,255,255,0.32)",
+                backgroundColor: "rgba(255,255,255,0.08)",
+                opacity: 1,
                 minHeight: "48px",
               }}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.13)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.07)"; }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.14)"; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)"; }}
               onClick={scrollToDemos}
               type="button">
               Ver mini apps
@@ -73,7 +76,7 @@ export default function CTAFinal() {
             {["Sin backend", "Sin login complicado", "Sin instalaciones", "Con WhatsApp"].map(label => (
               <div key={label} className="flex items-center gap-1.5">
                 <span className="font-bold" style={{ color: "#4ADE80" }}>✓</span>
-                <span className="font-mono text-[10px] text-white/50">{label}</span>
+                <span className="font-mono text-[10px]" style={{ color: "rgba(255,255,255,0.50)" }}>{label}</span>
               </div>
             ))}
           </div>

@@ -41,7 +41,9 @@ function FinalNavyCTA() {
         <h2 className="mx-auto mt-3 max-w-3xl text-[26px] font-black leading-[1.12] tracking-tight text-white sm:text-[38px]">
           Apps que ordenan tu negocio. Datos que impulsan tu crecimiento.
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-[14px] leading-relaxed text-white/68">
+        {/* CTAFinal trust copy - force light text on navy */}
+        <p className="mx-auto mt-4 max-w-2xl text-[14px] leading-relaxed"
+          style={{ color: "rgba(255,255,255,0.78)", opacity: 1 }}>
           Sin backend complejo · Sin login complicado · Sin instalaciones · Demo funcional
         </p>
         <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -59,9 +61,14 @@ function FinalNavyCTA() {
             Quiero mi app a medida →
           </a>
           <button
-            className="w-full rounded-xl border px-6 py-3.5 text-[14px] font-bold text-white/86 transition hover:bg-white/8 sm:w-auto"
+            className="w-full rounded-xl border px-6 py-3.5 text-[14px] font-bold transition sm:w-auto"
             onClick={() => scrollToSection("demos")}
-            style={{ borderColor: "rgba(255,255,255,0.16)" }}
+            style={{
+              color: "rgba(255,255,255,0.92)",
+              borderColor: "rgba(255,255,255,0.32)",
+              backgroundColor: "rgba(255,255,255,0.08)",
+              opacity: 1,
+            }}
             type="button"
           >
             Ver mini apps

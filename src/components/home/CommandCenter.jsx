@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { WA, APP_COLOR } from "../../tokens";
 import WinChrome from "../os/WinChrome";
+import { AppProductIcon } from "../ui/Icons";
 
 const CC_APPS = [
   {
     id: "crm",
     glyph: "C",
     label: "CRM Simple",
-    chaos: "Prospectos sin seguimiento",
+    chaos: "Ventas y seguimiento",
     metrics: [
       { label: "Leads", value: "24" },
       { label: "Conversión", value: "21%" },
@@ -40,7 +41,7 @@ const CC_APPS = [
     id: "cocina",
     glyph: "Co",
     label: "Cocina / POS",
-    chaos: "Pedidos, cocina y cobros sin orden",
+    chaos: "Pedidos y cocina",
     metrics: [
       { label: "Pedidos hoy", value: "18" },
       { label: "Vendido", value: "$8.4k" },
@@ -73,7 +74,7 @@ const CC_APPS = [
     id: "clinica",
     glyph: "+",
     label: "Clínica / Pacientes",
-    chaos: "Citas, expedientes e indicaciones dispersas",
+    chaos: "Agenda y fichas",
     metrics: [
       { label: "Citas hoy", value: "14" },
       { label: "Confirmadas", value: "79%" },
@@ -106,7 +107,7 @@ const CC_APPS = [
     id: "operacion",
     glyph: "Op",
     label: "Control Operativo",
-    chaos: "Pedidos, stock y responsables sin control",
+    chaos: "Stock y tareas",
     metrics: [
       { label: "Pedidos abiertos", value: "14" },
       { label: "Avance", value: "82%" },
@@ -229,6 +230,7 @@ export default function CommandCenter({ demos, onOpenDemo }) {
 
       {/* Window chrome */}
       <WinChrome
+        shortTitle="Command Center"
         title="HazloSimple OS · Command Center"
         right={
           <button
@@ -250,14 +252,13 @@ export default function CommandCenter({ demos, onOpenDemo }) {
         {/* LEFT — App dock (navy) */}
         <div className="overflow-hidden rounded-2xl" style={{ background: "#082B4C", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)" }}>
           <div className="border-b px-4 py-2.5" style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
-            <span className="font-mono text-[8px] uppercase tracking-widest" style={{ color: "#475569" }}>
+            <span className="font-mono text-[8px] uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.32)" }}>
               Apps
             </span>
           </div>
           {CC_APPS.map((a) => {
             const c = APP_COLOR[a.id];
             const active = activeId === a.id;
-            const glyphSize = a.glyph.length > 1 ? "text-[10px] font-extrabold" : "text-[14px] font-bold";
             return (
               <button
                 key={a.id}
@@ -274,18 +275,18 @@ export default function CommandCenter({ demos, onOpenDemo }) {
                   style={{
                     background: active ? c : "rgba(255,255,255,0.06)",
                     boxShadow: active ? `0 2px 10px ${c}55` : undefined,
+                    color: active ? "white" : c,
                   }}>
-                  <span className={`leading-none ${glyphSize}`} style={{ color: active ? "white" : c }}>
-                    {a.glyph}
-                  </span>
+                  <AppProductIcon type={a.id} size={18} />
                 </div>
                 {/* Info */}
                 <div className="min-w-0 flex-1">
                   <p className="text-[12px] font-semibold leading-tight"
-                    style={{ color: active ? "white" : "#94A3B8" }}>
+                    style={{ color: active ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.78)" }}>
                     {a.label}
                   </p>
-                  <p className="mt-0.5 truncate text-[9px] leading-tight" style={{ color: "#475569" }}>
+                  <p className="mt-0.5 truncate text-[9px] leading-tight"
+                    style={{ color: active ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.40)" }}>
                     {a.chaos}
                   </p>
                 </div>
@@ -295,7 +296,7 @@ export default function CommandCenter({ demos, onOpenDemo }) {
 
           {/* Bottom stat: key metric of active app */}
           <div className="px-4 py-4" style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}>
-            <p className="font-mono text-[7px] uppercase tracking-widest" style={{ color: "#475569" }}>
+            <p className="font-mono text-[7px] uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.38)" }}>
               {app.metrics[0].label}
             </p>
             <p className="mt-1 text-[24px] font-bold tabular-nums leading-none" style={{ color }}>

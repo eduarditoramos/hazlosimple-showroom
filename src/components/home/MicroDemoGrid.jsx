@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { APP_COLOR } from "../../tokens";
+import { AppProductIcon } from "../ui/Icons";
 
 const MICRO_APPS = [
   {
@@ -40,7 +41,7 @@ const MICRO_APPS = [
   {
     id: "clinica",
     demoIdx: 2,
-    name: "Clinica",
+    name: "Clínica",
     subtitle: "Agenda, pacientes e indicaciones",
     glyph: "+",
     kpis: [
@@ -92,8 +93,8 @@ function AppIcon({ app, color }) {
         boxShadow: `inset 0 1px 0 rgba(255,255,255,0.68), 0 6px 16px ${color}10`,
       }}
     >
-      <span className="text-[12px] font-black" style={{ color }}>
-        {app.glyph}
+      <span style={{ color }}>
+        <AppProductIcon type={app.id} size={18} />
       </span>
     </div>
   );
