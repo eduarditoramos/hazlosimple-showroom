@@ -216,9 +216,16 @@ export default function CommandCenter({ demos, onOpenDemo }) {
     setActionDone(prev => ({ ...prev, [activeId]: true }));
   };
 
+  const scrollToSection = (id) => {
+    document.getElementById(id)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
-    <div id="command-center" className="overflow-hidden rounded-2xl border"
-      style={{ borderColor: "#CCD1C5", background: "#FAFAF6", boxShadow: "0 32px 96px rgba(16,32,51,0.18)" }}>
+    <div id="apps" className="overflow-hidden rounded-[28px] border"
+      style={{ borderColor: "rgba(155,163,145,0.58)", background: "linear-gradient(180deg,#FFFDF7,#F7F8F2)", boxShadow: "0 34px 100px rgba(16,32,51,0.20), inset 0 1px 0 rgba(255,255,255,0.90)" }}>
 
       {/* Window chrome */}
       <WinChrome
@@ -238,10 +245,10 @@ export default function CommandCenter({ demos, onOpenDemo }) {
       />
 
       {/* 3-col layout */}
-      <div className="grid md:grid-cols-[180px_1fr_240px]">
+      <div className="grid gap-3 p-3 md:grid-cols-[176px_1fr_238px]">
 
         {/* LEFT — App dock (navy) */}
-        <div className="border-b md:border-b-0" style={{ background: "#082B4C", borderRight: "1px solid rgba(255,255,255,0.08)" }}>
+        <div className="overflow-hidden rounded-2xl" style={{ background: "#082B4C", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)" }}>
           <div className="border-b px-4 py-2.5" style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
             <span className="font-mono text-[8px] uppercase tracking-widest" style={{ color: "#475569" }}>
               Apps
@@ -298,10 +305,10 @@ export default function CommandCenter({ demos, onOpenDemo }) {
         </div>
 
         {/* CENTER — Metrics + chart + flow */}
-        <div className="border-b border-r md:border-b-0" style={{ borderColor: "#CCD1C5" }}>
+        <div className="rounded-2xl border p-3" style={{ borderColor: "#E0E4DA", background: "#FFFFFF", boxShadow: "0 12px 34px rgba(16,32,51,0.08)" }}>
 
           {/* Chaos label */}
-          <div className="border-b px-5 py-2.5" style={{ borderColor: "#CCD1C5", background: `${color}08` }}>
+          <div className="rounded-xl px-4 py-2.5" style={{ background: `${color}08` }}>
             <div className="flex items-center gap-2">
               <div className="h-1.5 w-1.5 rounded-full" style={{ background: color }} />
               <span className="text-[11px] font-semibold" style={{ color }}>
@@ -311,15 +318,12 @@ export default function CommandCenter({ demos, onOpenDemo }) {
           </div>
 
           {/* KPI grid */}
-          <div className="grid grid-cols-2 gap-0 border-b" style={{ borderColor: "#CCD1C5" }}>
+          <div className="mt-3 grid grid-cols-2 gap-2">
             {app.metrics.map((m, i) => (
               <div
                 key={m.label}
-                className="flex flex-col px-5 py-4"
-                style={{
-                  borderRight: i % 2 === 0 ? `1px solid #CCD1C5` : undefined,
-                  borderBottom: i < 2 ? `1px solid #CCD1C5` : undefined,
-                }}>
+                className="flex flex-col rounded-xl px-4 py-3"
+                style={{ background: "#F4F6EF", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.74)" }}>
                 <span className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>
                   {m.label}
                 </span>
@@ -331,7 +335,7 @@ export default function CommandCenter({ demos, onOpenDemo }) {
           </div>
 
           {/* Mini chart */}
-          <div className="border-b px-5 py-4" style={{ borderColor: "#CCD1C5" }}>
+          <div className="mt-3 rounded-xl px-4 py-4" style={{ background: "#F8F9F3" }}>
             <p className="mb-3 font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>
               {app.chartType === "funnel" ? "Pipeline de conversión"
                 : app.chartType === "vbars" ? "Ventas por hora"
@@ -342,7 +346,7 @@ export default function CommandCenter({ demos, onOpenDemo }) {
           </div>
 
           {/* Flow pipeline */}
-          <div className="px-5 py-4">
+          <div className="mt-3 rounded-xl px-4 py-4" style={{ background: "#F8F9F3" }}>
             <p className="mb-2.5 font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>
               Flujo operativo
             </p>
@@ -381,10 +385,10 @@ export default function CommandCenter({ demos, onOpenDemo }) {
         </div>
 
         {/* RIGHT — Live record + action */}
-        <div className="flex flex-col">
+        <div className="flex flex-col overflow-hidden rounded-2xl border" style={{ borderColor: "#E0E4DA", background: "#FFFFFF", boxShadow: "0 12px 34px rgba(16,32,51,0.08)" }}>
 
           {/* Record header */}
-          <div className="border-b px-5 py-3" style={{ borderColor: "#CCD1C5", background: "#F6F7F2" }}>
+          <div className="border-b px-5 py-3" style={{ borderColor: "#E0E4DA", background: "#F6F7F2" }}>
             <span className="font-mono text-[8px] font-semibold uppercase tracking-widest" style={{ color }}>
               {app.record.tag}
             </span>
@@ -453,6 +457,14 @@ export default function CommandCenter({ demos, onOpenDemo }) {
                 Quiero esta app
               </a>
             </div>
+            <button
+              className="mt-2 w-full rounded-xl border py-2 text-[11px] font-semibold transition hover:bg-white"
+              onClick={() => scrollToSection("demos")}
+              style={{ borderColor: "#CCD1C5", color: "#334155", background: "#FBFAF6" }}
+              type="button"
+            >
+              Ver todas las apps
+            </button>
           </div>
         </div>
       </div>

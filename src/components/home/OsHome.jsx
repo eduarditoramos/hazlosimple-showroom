@@ -1,8 +1,8 @@
 import { WA } from "../../tokens";
 import CommandCenter from "./CommandCenter";
+import MicroDemoGrid from "./MicroDemoGrid";
 import GiroPanel from "./GiroPanel";
 import FAQPanel from "./FAQPanel";
-import CTAFinal from "./CTAFinal";
 import HazloSimpleBanner from "./HazloSimpleBanner";
 
 const OS_BG = {
@@ -17,6 +17,60 @@ const CHIPS = [
   "Con WhatsApp",
   "A tu medida",
 ];
+
+const scrollToSection = (id) => {
+  document.getElementById(id)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+};
+
+function FinalNavyCTA() {
+  return (
+    <div id="cta" className="mx-auto w-full max-w-6xl px-4 pb-16 pt-4 sm:px-6 lg:px-8">
+      <div
+        className="overflow-hidden rounded-[28px] border px-6 py-8 text-center shadow-[0_28px_90px_rgba(8,43,76,0.24)] sm:px-10 sm:py-10"
+        style={{
+          borderColor: "rgba(255,255,255,0.10)",
+          background: "linear-gradient(135deg,#082B4C,#102033)",
+        }}
+      >
+        <p className="font-mono text-[9px] uppercase tracking-[0.24em]" style={{ color: "#86EFAC" }}>
+          HazloSimple OS
+        </p>
+        <h2 className="mx-auto mt-3 max-w-3xl text-[26px] font-black leading-[1.12] tracking-tight text-white sm:text-[38px]">
+          Apps que ordenan tu negocio. Datos que impulsan tu crecimiento.
+        </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-[14px] leading-relaxed text-white/68">
+          Sin backend complejo · Sin login complicado · Sin instalaciones · Demo funcional
+        </p>
+        <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a
+            className="relative w-full overflow-hidden rounded-xl px-6 py-3.5 text-[14px] font-bold text-white transition hover:opacity-90 sm:w-auto"
+            href={WA}
+            rel="noreferrer"
+            target="_blank"
+            style={{
+              background: "linear-gradient(to bottom,#16A34A,#15803D)",
+              boxShadow: "0 8px 22px rgba(22,163,74,0.28), inset 0 1px 0 rgba(255,255,255,0.18)",
+            }}
+          >
+            <span className="pointer-events-none absolute inset-x-0 top-0 h-[44%] rounded-t-xl bg-white/12" />
+            Quiero mi app a medida →
+          </a>
+          <button
+            className="w-full rounded-xl border px-6 py-3.5 text-[14px] font-bold text-white/86 transition hover:bg-white/8 sm:w-auto"
+            onClick={() => scrollToSection("demos")}
+            style={{ borderColor: "rgba(255,255,255,0.16)" }}
+            type="button"
+          >
+            Ver mini apps
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function OsHome({ demos, onOpenDemo }) {
   return (
@@ -85,7 +139,7 @@ export default function OsHome({ demos, onOpenDemo }) {
             <button
               className="rounded-xl border px-6 py-3.5 text-[14px] font-semibold transition hover:bg-black/5"
               style={{ borderColor: "#CCD1C5", background: "rgba(251,250,246,0.80)", color: "#102033" }}
-              onClick={() => document.getElementById("command-center")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => scrollToSection("demos")}
               type="button">
               Probar demos
             </button>
@@ -93,15 +147,17 @@ export default function OsHome({ demos, onOpenDemo }) {
         </div>
 
         {/* RIGHT — Command Center */}
-        <div className="flex flex-col justify-center px-4 py-8 lg:py-6 lg:pr-8 xl:pr-10">
+        <div id="launcher" className="flex flex-col justify-center px-4 py-8 lg:py-6 lg:pr-8 xl:pr-10">
           <CommandCenter demos={demos} onOpenDemo={onOpenDemo} />
         </div>
       </div>
 
       {/* ── Below the fold ─────────────────────────────────────────────────── */}
+      <div id="hero" className="scroll-mt-16" />
+      <MicroDemoGrid demos={demos} onOpenDemo={onOpenDemo} />
       <GiroPanel />
       <FAQPanel />
-      <CTAFinal />
+      <FinalNavyCTA />
       <HazloSimpleBanner />
     </div>
   );
