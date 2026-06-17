@@ -79,7 +79,7 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
             const active = stageFilter === stage;
             return (
               <button key={stage}
-                className="rounded-full border px-3 py-1 text-[11px] font-semibold transition"
+                className="rounded-full border px-3 py-1.5 text-[11px] font-semibold transition"
                 style={active
                   ? { background: color, borderColor: color, color: "white" }
                   : { background: "white", borderColor: "#CCD1C5", color: "#667085" }}
@@ -100,13 +100,13 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
             Acciones de hoy · {pendingCount} pendientes
           </span>
         </div>
-        <div className="grid grid-cols-3 divide-x" style={{ borderColor: "#CCD1C5" }}>
+        <div className="grid gap-2 p-3 sm:grid-cols-3" style={{ background: "#F6F7F1" }}>
           {[
             { label: "Llamar a Grupo Norte", badge: "Hoy", bc: "#F59E0B" },
             { label: "Cotización · Mariana López", badge: "Urgente", bc: "#DC2626" },
             { label: "Follow-up · Clínica S. Fe", badge: "Listo", bc: "#22C55E" },
           ].map((a, i) => (
-            <div key={i} className="flex flex-col gap-1.5 px-4 py-3" style={{ borderColor: "#CCD1C5" }}>
+            <div key={i} className="flex flex-col gap-1.5 rounded-2xl border px-4 py-3" style={{ borderColor: "#E0E4DA", background: "#FFFFFF" }}>
               <span className="inline-flex w-fit rounded-full px-2 py-0.5 font-mono text-[7px] font-bold uppercase tracking-wide"
                 style={{ background: `${a.bc}18`, color: a.bc }}>{a.badge}</span>
               <p className="text-[11px] font-medium leading-snug" style={{ color: "#102033" }}>{a.label}</p>
@@ -248,13 +248,13 @@ export default function CRMView({ completedRecords, demo, onAction, onBack, onSe
       {/* Módulos activos */}
       <div className="border-t" style={{ borderColor: "#CCD1C5" }}>
         <DemoSectionLabel>Módulos activos</DemoSectionLabel>
-        <div className="grid grid-cols-3 divide-x" style={{ borderColor: "#CCD1C5" }}>
+        <div className="grid gap-2 p-3 sm:grid-cols-3" style={{ background: "#F6F7F1" }}>
           {[
             { label: "Pipeline", value: demo.kpis.find(k => k.label === "Venta estimada")?.value ?? "$87k", sub: `${demo.stages.length} etapas activas`, icon: "↗" },
             { label: "Recordatorios", value: String(pendingCount), sub: "seguimientos pendientes hoy", icon: "△" },
             { label: "Reportes", value: "21%", sub: "tasa de conversión actual", icon: "#" },
           ].map((m) => (
-            <div key={m.label} className="flex flex-col px-4 py-3.5" style={{ borderColor: "#CCD1C5", background: "#F9F9F5" }}>
+            <div key={m.label} className="flex flex-col rounded-2xl border px-4 py-3.5" style={{ borderColor: "#E0E4DA", background: "#FFFFFF" }}>
               <div className="mb-1 flex items-center gap-1.5">
                 <span className="text-[11px]">{m.icon}</span>
                 <p className="font-mono text-[8px] font-semibold uppercase tracking-wider" style={{ color: "#667085" }}>{m.label}</p>

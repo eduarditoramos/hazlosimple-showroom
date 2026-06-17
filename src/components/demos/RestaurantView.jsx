@@ -85,7 +85,7 @@ export default function RestaurantView({ completedRecords, demo, onAction, onBac
               Tablero de comandas · {demo.records.length} pedidos
             </span>
           </div>
-          <div className="grid grid-cols-2 gap-2.5 p-3" style={{ background: "#F6F7F1" }}>
+          <div className="grid gap-2.5 p-3 sm:grid-cols-2" style={{ background: "#F6F7F1" }}>
             {demo.records.map(order => {
               const stage = getStage(order);
               const dot = statusColor(order.status);

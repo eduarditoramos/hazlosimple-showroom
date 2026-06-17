@@ -241,7 +241,7 @@ export default function MicroDemoGrid({ demos, onOpenDemo }) {
             return (
               <article
                 key={app.id}
-                className="flex min-h-[332px] flex-col rounded-[20px] border p-3.5"
+                className="flex min-h-[332px] min-w-0 flex-col rounded-[20px] border p-3.5"
                 style={{
                   borderColor: `${color}20`,
                   background: "linear-gradient(180deg,#FFFFFF,#FAFAF6)",
@@ -303,7 +303,7 @@ export default function MicroDemoGrid({ demos, onOpenDemo }) {
                   )}
                 </div>
 
-                <div className="mt-auto grid grid-cols-[1fr_auto] gap-2 pt-3">
+                <div className="mt-auto grid grid-cols-1 gap-2 pt-3">
                   <button
                     className="rounded-xl px-3 py-2.5 text-[12px] font-black text-white transition hover:opacity-90"
                     onClick={() => setDoneMap((cur) => ({ ...cur, [app.id]: true }))}

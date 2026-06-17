@@ -245,7 +245,7 @@ export default function CommandCenter({ demos, onOpenDemo }) {
       />
 
       {/* 3-col layout */}
-      <div className="grid gap-3 p-3 md:grid-cols-[176px_1fr_238px]">
+      <div className="grid gap-3 p-3 lg:grid-cols-[176px_1fr_238px]">
 
         {/* LEFT — App dock (navy) */}
         <div className="overflow-hidden rounded-2xl" style={{ background: "#082B4C", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)" }}>

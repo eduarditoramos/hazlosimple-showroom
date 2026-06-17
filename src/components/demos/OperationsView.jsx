@@ -100,7 +100,7 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
             Tareas urgentes · {localTasks.filter(t => !t.done && t.priority === "Alta").length} altas
           </span>
         </div>
-        <div className="grid grid-cols-2 gap-2 p-3" style={{ background: "#F6F7F1" }}>
+        <div className="grid gap-2 p-3 sm:grid-cols-2" style={{ background: "#F6F7F1" }}>
           {localTasks.filter(t => !t.done).slice(0, 2).map((task) => (
             <div key={task.id} className="flex items-start gap-2.5 rounded-2xl border px-4 py-3" style={{ borderColor: "#E0E4DA", background: "#FFFFFF", boxShadow: "0 8px 20px rgba(16,32,51,0.045)" }}>
               <button
@@ -185,7 +185,7 @@ export default function OperationsView({ completedRecords, demo, onAction, onBac
             </div>
           </div>
 
-          <div className="mx-3 mb-3 grid grid-cols-2 overflow-hidden rounded-2xl border" style={{ borderColor: "#E0E4DA", background: "#FFFFFF" }}>
+          <div className="mx-3 mb-3 grid overflow-hidden rounded-2xl border sm:grid-cols-2" style={{ borderColor: "#E0E4DA", background: "#FFFFFF" }}>
             <div className="border-r px-4 py-3" style={{ borderColor: "#E0E4DA" }}>
               <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Responsable</p>
               <p className="mt-1 text-[13px] font-semibold" style={{ color: "#102033" }}>{selectedRecord.owner}</p>

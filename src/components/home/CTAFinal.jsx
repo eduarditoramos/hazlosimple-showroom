@@ -1,53 +1,79 @@
 import { WA } from "../../tokens";
-import WinChrome from "../os/WinChrome";
 
 export default function CTAFinal() {
+  const scrollToDemos = () =>
+    document.getElementById("demos")?.scrollIntoView({ behavior: "smooth" });
+
   return (
     <div id="cta" className="mx-auto w-full max-w-6xl px-4 pb-16 pt-4 sm:px-6 lg:px-8">
-      <div className="overflow-hidden rounded-2xl border"
-        style={{ borderColor: "#CCD1C5", background: "#FFFDF7", boxShadow: "0 24px 80px rgba(16,32,51,0.16)" }}>
-        <WinChrome title="¿Listo para convertir tu negocio en app?" />
-        <div className="px-6 py-8 text-center sm:px-10 sm:py-10">
-          <p className="font-mono text-[9px] uppercase tracking-[0.24em]" style={{ color: "#16A34A" }}>
-            HazloSimple · Apps para negocios reales
-          </p>
-          <h2 className="mx-auto mt-3 max-w-lg text-[24px] font-bold leading-[1.15] tracking-tight sm:text-[30px]"
-            style={{ color: "#102033" }}>
-            ¿Quieres ver tu negocio convertido en app?
+      <div className="overflow-hidden rounded-2xl"
+        style={{
+          background: "linear-gradient(160deg, #0d3560 0%, #082B4C 60%, #061f38 100%)",
+          boxShadow: "0 32px 80px rgba(8,43,76,0.40), 0 8px 24px rgba(8,43,76,0.20)",
+        }}>
+
+        {/* Dot texture overlay */}
+        <div className="pointer-events-none absolute inset-0 rounded-2xl"
+          style={{
+            backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)",
+            backgroundSize: "20px 20px",
+          }} />
+
+        <div className="relative px-6 py-10 text-center text-white sm:px-12 sm:py-14">
+
+          {/* System pill */}
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5"
+            style={{ borderColor: "rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.06)" }}>
+            <div className="h-1.5 w-1.5 rounded-full" style={{ background: "#16A34A" }} />
+            <span className="font-mono text-[9px] uppercase tracking-[0.22em]" style={{ color: "rgba(255,255,255,0.55)" }}>
+              HazloSimple OS · Apps para negocios reales
+            </span>
+          </div>
+
+          {/* Headline */}
+          <h2 className="mx-auto max-w-xl text-[26px] font-black leading-[1.1] tracking-tight text-white sm:text-[34px]">
+            Apps que ordenan tu negocio.{" "}
+            <span style={{ color: "#4ADE80" }}>Datos que impulsan tu crecimiento.</span>
           </h2>
-          <p className="mx-auto mt-3 max-w-sm text-[14px] leading-relaxed" style={{ color: "#667085" }}>
-            Cuéntame tu giro y te digo qué módulos tendría sentido construir primero.
+
+          {/* Subtext */}
+          <p className="mx-auto mt-4 max-w-md text-[14px] leading-relaxed text-white/70">
+            Sin backend complejo · Sin login complicado · Sin instalaciones · Demo funcional
           </p>
 
-          <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          {/* CTAs */}
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a href={WA} rel="noreferrer" target="_blank"
-              className="relative w-full overflow-hidden rounded-xl px-6 py-3.5 text-[14px] font-semibold text-white transition hover:opacity-90 sm:w-auto"
+              className="relative w-full overflow-hidden rounded-xl px-7 py-3.5 text-[14px] font-semibold text-white transition hover:opacity-90 sm:w-auto"
               style={{
-                background: "linear-gradient(to bottom,#082B4C,#0a3a60)",
-                boxShadow: "0 4px 18px rgba(8,43,76,0.35), inset 0 1px 0 rgba(255,255,255,0.12)",
+                background: "linear-gradient(to bottom, #16A34A, #15803D)",
+                boxShadow: "0 4px 20px rgba(22,163,74,0.45), inset 0 1px 0 rgba(255,255,255,0.16)",
+                minHeight: "48px",
               }}>
-              <span className="pointer-events-none absolute inset-x-0 top-0 h-[44%] rounded-t-xl bg-white/10" />
-              Quiero mi app →
+              <span className="pointer-events-none absolute inset-x-0 top-0 h-[44%] rounded-t-xl bg-white/[0.10]" />
+              Quiero mi app a medida →
             </a>
             <button
-              className="w-full rounded-xl border px-6 py-3.5 text-[14px] font-semibold transition hover:bg-black/5 sm:w-auto"
-              style={{ borderColor: "#CCD1C5", color: "#102033" }}
-              onClick={() => document.getElementById("hero")?.scrollIntoView({ behavior: "smooth" })}
+              className="w-full rounded-xl border px-7 py-3.5 text-[14px] font-semibold text-white/90 transition sm:w-auto"
+              style={{
+                borderColor: "rgba(255,255,255,0.28)",
+                background: "rgba(255,255,255,0.08)",
+                minHeight: "48px",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.13)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.07)"; }}
+              onClick={scrollToDemos}
               type="button">
-              Ver demos
+              Ver mini apps
             </button>
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            {[
-              ["✓", "Sin backend"],
-              ["✓", "Sin login complicado"],
-              ["✓", "Sin tecnicismos"],
-              ["✓", "Con WhatsApp"],
-            ].map(([icon, label]) => (
+          {/* Trust badges */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {["Sin backend", "Sin login complicado", "Sin instalaciones", "Con WhatsApp"].map(label => (
               <div key={label} className="flex items-center gap-1.5">
-                <span className="font-mono text-[10px] font-bold" style={{ color: "#16A34A" }}>{icon}</span>
-                <span className="font-mono text-[10px]" style={{ color: "#98A2B3" }}>{label}</span>
+                <span className="font-bold" style={{ color: "#4ADE80" }}>✓</span>
+                <span className="font-mono text-[10px] text-white/50">{label}</span>
               </div>
             ))}
           </div>

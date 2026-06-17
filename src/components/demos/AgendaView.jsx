@@ -146,10 +146,10 @@ export default function AgendaView({ completedRecords, demo, onAction, onBack, o
           </div>
 
           {/* Tabs */}
-          <div className="mx-3 mb-3 flex rounded-2xl border p-1" style={{ borderColor: "#E0E4DA", background: "#F0F1EC" }}>
+          <div className="mx-3 mb-3 flex overflow-x-auto rounded-2xl border p-1" style={{ borderColor: "#E0E4DA", background: "#F0F1EC" }}>
             {TABS.map(tab => (
               <button key={tab.id}
-                className="flex-1 rounded-xl py-2.5 font-mono text-[9px] font-bold uppercase tracking-wider transition"
+                className="min-w-[92px] flex-none rounded-xl px-2 py-2.5 font-mono text-[9px] font-bold uppercase tracking-wider transition sm:flex-1"
                 style={activeTab === tab.id
                   ? { color, background: "white", boxShadow: "0 6px 16px rgba(16,32,51,0.08)" }
                   : { color: "#667085", background: "transparent" }}
@@ -162,7 +162,7 @@ export default function AgendaView({ completedRecords, demo, onAction, onBack, o
           {/* Tab: Datos */}
           {activeTab === "datos" && (
             <div className="flex flex-col">
-              <div className="grid grid-cols-2 border-b" style={{ borderColor: "#CCD1C5" }}>
+              <div className="grid border-b sm:grid-cols-2" style={{ borderColor: "#CCD1C5" }}>
                 <div className="border-r px-4 py-3" style={{ borderColor: "#E0E4DA" }}>
                   <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Valor de cita</p>
                   <p className="mt-0.5 text-[18px] font-bold tabular-nums" style={{ color: "#102033" }}>{selectedRecord.value}</p>
@@ -180,14 +180,26 @@ export default function AgendaView({ completedRecords, demo, onAction, onBack, o
                 <p className="font-mono text-[8px] uppercase tracking-wider" style={{ color: "#98A2B3" }}>Próxima acción</p>
                 <p className="mt-0.5 text-[12px] font-medium" style={{ color: "#102033" }}>{selectedRecord.nextAction}</p>
               </div>
-              <div className="mx-3 mb-3 flex items-center gap-2 rounded-2xl px-4 py-2.5" style={{ background: `${color}06` }}>
-                <span className="font-mono text-[8px]" style={{ color: "#98A2B3" }}>Ver también:</span>
-                {["Indicaciones", "Archivos", "Seguimiento"].map(t => (
-                  <button key={t}
-                    className="rounded-full border px-2.5 py-0.5 font-mono text-[8px] font-semibold transition hover:opacity-80"
-                    style={{ borderColor: `${color}30`, color, background: `${color}0a` }}
-                    onClick={() => setActiveTab(t.toLowerCase())} type="button">{t}</button>
-                ))}
+              <div className="mx-3 mb-3 rounded-2xl border p-2" style={{ borderColor: `${color}20`, background: `${color}06` }}>
+                <p className="mb-1.5 px-1 font-mono text-[8px] uppercase tracking-widest" style={{ color: "#98A2B3" }}>
+                  Expediente
+                </p>
+                <div className="grid grid-cols-3 gap-1.5">
+                  {["Indicaciones", "Archivos", "Seguimiento"].map(t => (
+                    <button key={t}
+                      className="flex items-center justify-center rounded-xl border text-[12px] font-semibold transition hover:opacity-85 active:scale-[0.97]"
+                      style={{
+                        borderColor: `${color}28`,
+                        color,
+                        background: `${color}0c`,
+                        minHeight: "40px",
+                        padding: "8px 4px",
+                      }}
+                      onClick={() => setActiveTab(t.toLowerCase())} type="button">
+                      {t}
+                    </button>
+                  ))}
+                </div>
               </div>
               <div className="mt-auto border-t px-5 pb-4 pt-3" style={{ borderColor: "#CCD1C5" }}>
                 <ActionButton />

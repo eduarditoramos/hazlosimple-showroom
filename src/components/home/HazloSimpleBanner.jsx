@@ -7,7 +7,7 @@ export default function HazloSimpleBanner() {
         href="https://hazlosimple.netlify.app/" rel="noreferrer" target="_blank"
         style={{ borderColor: "#CCD1C5", background: "#FFFDF7", boxShadow: "0 12px 36px rgba(16,32,51,0.10)" }}>
         <WinChrome title="hazlosimple.netlify.app ↗" />
-        <div className="flex items-center justify-between gap-4 px-5 py-4" style={{ background: "#FBFAF6" }}>
+        <div className="flex flex-col items-start justify-between gap-4 px-5 py-4 sm:flex-row sm:items-center" style={{ background: "#FBFAF6" }}>
           <div className="flex items-center gap-3">
             <div className="grid h-8 w-8 shrink-0 place-items-center overflow-hidden rounded-[9px]"
               style={{ background: "#082B4C", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.12), 0 2px 6px rgba(8,43,76,0.25)" }}>
@@ -20,7 +20,7 @@ export default function HazloSimpleBanner() {
               </p>
             </div>
           </div>
-          <span className="shrink-0 font-mono text-[11px]" style={{ color: "#98A2B3" }}>hazlosimple.netlify.app ↗</span>
+          <span className="break-all font-mono text-[11px] sm:shrink-0" style={{ color: "#98A2B3" }}>hazlosimple.netlify.app ↗</span>
         </div>
       </a>
     </div>
