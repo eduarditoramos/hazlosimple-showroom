@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="101" fill="#082B4C"/>
+  <!-- Subtle inner gloss -->
+  <rect x="0" y="0" width="512" height="256" rx="101" fill="rgba(255,255,255,0.05)"/>
+  <!-- HS lettering -->
+  <text
+    x="256" y="288"
+    text-anchor="middle"
+    dominant-baseline="auto"
+    font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+    font-weight="900"
+    font-size="224"
+    letter-spacing="-6"
+    fill="white"
+  >HS</text>
+  <!-- Green live dot -->
+  <circle cx="406" cy="106" r="37" fill="#16A34A"/>
+  <circle cx="406" cy="106" r="21" fill="#4ADE80"/>
+</svg>
