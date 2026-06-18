@@ -3,6 +3,7 @@ import { TL } from "./tokens";
 import { demos } from "./data/demos";
 import SystemBar from "./components/os/SystemBar";
 import OsHome from "./components/home/OsHome";
+import InstallPrompt from "./components/pwa/InstallPrompt";
 import CRMView from "./components/demos/CRMView";
 import RestaurantView from "./components/demos/RestaurantView";
 import AgendaView from "./components/demos/AgendaView";
@@ -96,6 +97,7 @@ function App() {
         />
       )}
       <Toast message={toast} />
+      <InstallPrompt />
     </div>
   );
 }
